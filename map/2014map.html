@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+	<title>2014 Map</title>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <!-- I recommend you host this file on your own, since this will change without warning -->
+  <script src="http://datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
+  <style type = "text/css">
+  body{font-family: Arial, sans-serif;font-size:9px;}
+  a:link {color:#54D98E; text-decoration:none;}      /* unvisited link */
+  a:visited {color:#54D98E;}  /* visited link */
+  a:hover {color:#54D98E;}  /* mouse over link */
+  a:active {color:#54D98E;}  /* selected link */
+  #title{font-size:48px;font-family:Helvetica;color:#444;line-height:200%;margin-left:25px;position:absolute;bottom:20px;}
+  #notes{position:absolute; left:40px; font-size:10px; bottom:10px;width:950px;color:#aaa;font-family:Helvetica;}
+  #subtitle{position:absolute; left:20px; top:15px; width:250px;color:#444;font-size:10px;}
+  #version{position:absolute; left:15px; bottom:10px;color:#aaa;}
+  #menu{position:absolute; right:20px; top:15px;color:#444;font-size:14px;}
+  </style>
+  </head>
+<body>  
+  <div id = "notes">
+Data from whitney biennial website.<br/>Made using datamaps.
+  </div>
+<div id = "version">V.0</div>
+  
+  <div id="container1" style="position:absolute;top:-50px; width: 95%; max-height:100%;"></div>
+  <div id ="title">WHITNEY BIENNIAL 2014</div>
+  <div id = "menu">
+<strong>	  <a href="http://dataminding.org/whitney/dot_calendar.html" target="_self">See Ages of Artists</a></strong>
+  </div>
+<div id = "subtitle">Rollover dots to see artist</div>
+  
+     <script>
+       //basic map config with custom fills, mercator projection
+      var map = new Datamap({
+        scope: 'world',
+        element: document.getElementById('container1'),
+        projection: 'mercator',
+		bubblesConfig: {
+		        borderWidth: 0,
+				borderColor: 'red',
+				},
+		geographyConfig: {
+		    popupOnHover: false,
+		    highlightOnHover: false
+		  },
+        fills: {
+          defaultFill: '#ddd',
+          lt50: '#ddd',
+		  gt50: '#555'
+        },
+        
+        data: {
+          USA: {fillKey: 'lt50' }   
+        }
+      })
+      //bubbles, custom popup on hover template
+    map.bubbles([
+		{name: 'Tony Lewis, born 1986 in Los Angeles CA, lives and works in Chicago IL', latitude: 34.0536781, longitude:-118.2427025, radius:2, fillKey:'gt50'},
+		{name: 'Jacolby Satterwhite, born 1986 in Columbia SC, lives and works in New York NY', latitude: 34.0007104, longitude:-81.0348144, radius:2, fillKey:'gt50'},
+		{name: 'Kevin Beasley, born 1985 in Lynchburg VA, lives and works in New York NY', latitude: 37.4137536, longitude:-79.1422464, radius:2, fillKey:'gt50'},
+		{name: 'Yve Laris Cohen, born 1985 in San Diego CA, lives and works in Brooklyn NY', latitude: 32.7469869, longitude:-117.21177, radius:2, fillKey:'gt50'},
+		{name: 'Zackary Drucker, born 1983 in Syracuse NY , live and work in Los Angeles CA', latitude: 43.0481221, longitude:-76.1474244, radius:2, fillKey:'gt50'},
+		{name: 'Dashiell Manley, born 1983 in Fontana CA, lives and works in Los Angeles CA', latitude: 34.0922335, longitude:-117.435048, radius:2, fillKey:'gt50'},
+		{name: 'Rhys Ernst, born 1982 in Pomona CA , live and work in Los Angeles CA', latitude: 34.0552886, longitude:-117.7522793, radius:2, fillKey:'gt50'},
+		{name: 'Radamés “Juni” Figueroa, born 1982 in San Juan Puerto Rico, lives and works in San Juan Puerto Rico', latitude: 19.4464186, longitude:-67.0755069, radius:2, fillKey:'gt50'},
+		{name: 'Sergei Tcherepnin, born 1981 in Watertown MA, lives and works in New York NY', latitude: 42.3709299, longitude:-71.1828321, radius:2, fillKey:'gt50'},
+		{name: 'Valerie Snobeck, born 1980 in Wadena MN, lives and works in New York NY', latitude: 46.5850936, longitude:-94.9606684, radius:2, fillKey:'gt50'},
+		{name: 'Jessie Mott, born 1980 in New York NY , live and work in Chicago IL', latitude: 40.7305991, longitude:-73.9865812, radius:2, fillKey:'gt50'},
+		{name: 'Travis Jeppesen, born 1979 in Ft. Lauderdale FL, lives and works in London England', latitude: 26.1223084, longitude:-80.1433786, radius:2, fillKey:'gt50'},
+		{name: 'Trevor Shimizu, born 1978 in Hawaii, lives and works New York in New York NY', latitude: 23.2160437, longitude:-157.975203, radius:2, fillKey:'gt50'},
+		{name: 'Darren Bader, born 1978 in Bridgeport CT, lives and works in New York NY', latitude: 41.1670412, longitude:-73.2048348, radius:2, fillKey:'gt50'},
+		{name: 'Elijah Burgher, born 1978 in Kingston NY, lives and works in Chicago IL', latitude: 41.9270987, longitude:-73.99611, radius:2, fillKey:'gt50'},
+		{name: 'Victoria Fu, born 1978 in Santa Monica CA, lives and works in San Diego CA', latitude: 34.0195598, longitude:-118.4869739, radius:2, fillKey:'gt50'},
+		{name: 'Diego Leclery, born 1978 in Boulogne-Billancourt France, lives and works in New York NY', latitude: 48.8357506, longitude:2.2399217, radius:2, fillKey:'gt50'},
+		{name: 'Shana Lutker, born 1978 in Northport NY, lives and works in Los Angeles CA', latitude: 40.9009314, longitude:-73.3431727, radius:2, fillKey:'gt50'},
+		{name: 'Ken Okiishi, born 1978 in Ames IA, lives and works in New York NY', latitude: 42.0346917, longitude:-93.6201507, radius:2, fillKey:'gt50'},
+		{name: 'Sara Greenberger Rafferty, born 1978 in Evanston IL, lives and works in Brooklyn NY', latitude: 42.0447388, longitude:-87.6930459, radius:2, fillKey:'gt50'},
+		{name: 'Philip Vanderhyden, born 1978 in Menasha WI, lives and works in New York NY', latitude: 44.2022293, longitude:-88.4465361, radius:2, fillKey:'gt50'},
+		{name: 'Ei Arakawa, born 1977 in Fukushima Japan , live and work in New York NY', latitude: 37.7588737, longitude:140.4692432, radius:2, fillKey:'gt50'},
+		{name: 'Uri Aran, born 1977 in Jerusalem Israel, lives and works in New York NY', latitude: 31.7774287, longitude:35.2247239, radius:2, fillKey:'gt50'},
+		{name: 'Andrew Bujalski, born 1977 in Boston MA, lives and works in Austin TX', latitude: 42.3604823, longitude:-71.0595678, radius:2, fillKey:'gt50'},
+		{name: 'Angie Keefer, born 1977 in Huntsville AL, lives and works in New York NY', latitude: 34.577882, longitude:-86.8358347843877, radius:2, fillKey:'gt50'},
+		{name: 'Dave McKenzie, born 1977 in Kingston Jamaica, lives and works in Brooklyn NY', latitude: 17.9712148, longitude:-76.7928128, radius:2, fillKey:'gt50'},
+		{name: 'Paul P., born 1977 in Hamilton Ontario Canada in, lives and works New York', latitude: 43.254687, longitude:-79.8678197, radius:2, fillKey:'gt50'},
+		{name: 'Emily Sundblad, born 1977 in Dalsjöfors Sweden, lives and works in New York NY', latitude: 57.7247008, longitude:13.1008257, radius:2, fillKey:'gt50'},
+		{name: 'Donelle Woolford, born 1977 in Conyers GA, lives and works in New York NY', latitude: 33.6676103, longitude:-84.0176904, radius:2, fillKey:'gt50'},
+		{name: 'Karl Haendel, born 1976 in New York NY, lives and works in Los Angeles CA', latitude: 40.7305991, longitude:-73.9865812, radius:2, fillKey:'gt50'},
+		{name: 'taisha paggett, born 1976 in Fresno CA, lives and works in Chicago IL', latitude: 36.730738, longitude:-119.699200933824, radius:2, fillKey:'gt50'},
+		{name: 'Alex Waterman, born 1975 in Portsmouth VA, lives and works in New York NY', latitude: 36.8354258, longitude:-76.2981742, radius:2, fillKey:'gt50'},
+		{name: 'Alex Jovanovich, born 1975 in Hobart Indiana, lives and works in Bronx NY', latitude: 41.5322592, longitude:-87.2550353, radius:2, fillKey:'gt50'},
+		{name: 'Molly Zuckerman-Hartung, born 1975 in Los Gatos CA, lives and works in Chicago IL', latitude: 37.2333645, longitude:-121.947273077603, radius:2, fillKey:'gt50'},
+		{name: 'Ricky Swallow, born 1974 in San Remo Australia, lives and works in Los Angeles CA', latitude: -33.2138889, longitude:151.5216667, radius:2, fillKey:'gt50'},
+		{name: 'Pedro Vélez, born 1973 in Bayamón Puerto Rico, lives and works in Chicago IL', latitude: 18.398755, longitude:-66.1559564, radius:2, fillKey:'gt50'},
+		{name: 'Matthew Deleget, born 1972 in Hammond IN, lives and works in Brooklyn NY', latitude: 41.5833658, longitude:-87.500043, radius:2, fillKey:'gt50'},
+		{name: 'Shio Kusaka, born 1972 in Japan lives and works in Los Angeles CA', latitude: 36.5748441, longitude:139.2394179, radius:2, fillKey:'gt50'},
+		{name: 'Sterling Ruby, born 1972 in Bitburg Germany, lives and works in Los Angeles CA', latitude: 49.9732762, longitude:6.524947, radius:2, fillKey:'gt50'},
+		{name: 'Véréna Paravel, born 1971 in Neuchâtel Switzerland , live and work in Boston MA', latitude: 46.9895435, longitude:6.9292679, radius:2, fillKey:'gt50'},
+		{name: 'Matt Hanner, born 1971 in Columbus OH died 2011 in Porter IN', latitude: 39.9622601, longitude:-83.0007065, radius:2, fillKey:'gt50'},
+		{name: 'Miguel Gutierrez, born 1971 in Flushing NY, lives and works in Brooklyn NY', latitude: 40.7654301, longitude:-73.8174291, radius:2, fillKey:'gt50'},
+		{name: 'Miljohn Ruperto, born 1971 in Manila Philippines, lives and works in Los Angeles CA', latitude: 14.5906216, longitude:120.9799696, radius:2, fillKey:'gt50'},
+		{name: 'Alma Allen, born 1970 in Heber City UT, lives and works in Joshua Tree CA', latitude: 40.5065256, longitude:-111.4133091, radius:2, fillKey:'gt50'},
+		{name: 'Carissa Rodriguez, born 1970 in New York NY , live and work in New York NY', latitude: 40.7305991, longitude:-73.9865812, radius:2, fillKey:'gt50'},
+		{name: 'Jennifer stein, born 1970 in Seattle WA, lives and works in New York NY', latitude: 47.6038321, longitude:-122.3300624, radius:2, fillKey:'gt50'},
+		{name: 'Laura Owens, born 1970 in Euclid OH, lives and works in Los Angeles CA', latitude: 41.5931049, longitude:-81.5267873, radius:2, fillKey:'gt50'},
+		{name: 'Rebecca Morris, born 1969 in Honolulu Hawaii, lives and works in Los Angeles CA', latitude: 21.304547, longitude:-158.8556764, radius:2, fillKey:'gt50'},
+		{name: 'Catherine Sullivan, born 1968 in Los Angeles CA, lives and works in Chicago IL', latitude: 34.0536781, longitude:-118.2427025, radius:2, fillKey:'gt50'},
+		{name: 'Lisa Anne Auerbach, born 1967 in Ann Arbor MI, lives and works in Los Angeles CA', latitude: 42.2681569, longitude:-83.7312291, radius:2, fillKey:'gt50'},
+		{name: 'Jonn Herschend, born 1967 in Branson MO, lives and works in San Francisco CA', latitude: 36.607958, longitude:-93.2810170588579, radius:2, fillKey:'gt50'},
+		{name: 'Bjarne Melgaard, born 1967 in Sydney Australia, lives and works in New York NY', latitude: -33.8548157, longitude:151.2164539, radius:2, fillKey:'gt50'},
+		{name: 'A.L. Steiner, born 1967 in Miami FL, lives and works in Los Angeles CA', latitude: 25.7742658, longitude:-80.1936589, radius:2, fillKey:'gt50'},
+		{name: 'Lucien Castaing-Taylor, born 1966 in , liverpool UK , live and work in Boston MA', latitude: 53.4054719, longitude:-2.9805393, radius:2, fillKey:'gt50'},
+		{name: 'Chris Larson, born 1966 in St. Paul MN, lives and works in St. Paul MN', latitude: 44.9504037, longitude:-93.1015026, radius:2, fillKey:'gt50'},
+		{name: 'Keith Mayerson, born 1966 in Cincinnati OH, lives and works in New York NY', latitude: 39.1014537, longitude:-84.5124602, radius:2, fillKey:'gt50'},
+		{name: 'Paul Druecke, born 1964 in Milwaukee WI, lives and works in Milwaukee WI', latitude: 43.0349931, longitude:-87.922497, radius:2, fillKey:'gt50'},
+		{name: 'Steve Reinke, born 1963 in Eganville Ontario  in Canada ', latitude: 45.5406943, longitude:-77.1004317, radius:2, fillKey:'gt50'},
+		{name: 'Ben Kinmont, born 1963 in Burlington VT, lives and works in Sebastopol CA', latitude: 44.4723989, longitude:-73.2114941, radius:2, fillKey:'gt50'},
+		{name: 'Carol Jackson, born 1962 in Los Angeles CA, lives and works in Chicago IL', latitude: 34.0536781, longitude:-118.2427025, radius:2, fillKey:'gt50'},
+		{name: 'David Foster Wallace, born 1962 in Ithaca NY Died 2008 in Claremont CA', latitude: 42.4396039, longitude:-76.4968019, radius:2, fillKey:'gt50'},
+		{name: 'Zoe Leonard, born 1961 in Liberty NY, lives and works in New York NY', latitude: 41.8012002, longitude:-74.74655, radius:2, fillKey:'gt50'},
+		{name: 'Jacqueline Humphries, born 1960 in New Orleans LA, lives and works in New York NY', latitude: 29.9499323, longitude:-90.0701156, radius:2, fillKey:'gt50'},
+		{name: 'Tony Tasset, born 1960 in Cincinnati OH, lives and works in Chicago IL', latitude: 39.1014537, longitude:-84.5124602, radius:2, fillKey:'gt50'},
+		{name: 'Charline von Heyl, born 1960 in Mainz Germany, lives and works in New York NY', latitude: 49.9999952, longitude:8.2710237, radius:2, fillKey:'gt50'},
+		{name: 'Dan Walsh, born 1960 in Philadelphia PA, lives and works in New York NY', latitude: 39.952335, longitude:-75.163789, radius:2, fillKey:'gt50'},
+		{name: 'Suzanne McClelland, born 1959 in Jacksonville FL, lives and works in New York NY', latitude: 30.3321838, longitude:-81.655651, radius:2, fillKey:'gt50'},
+		{name: 'Joel Otterson, born 1959 in Los Angeles CA, lives and works in Los Angeles CA', latitude: 34.0536781, longitude:-118.2427025, radius:2, fillKey:'gt50'},
+		{name: 'Jeff Gibson, born 1958 in Brisbane Australia, lives and works in New York NY', latitude: -27.4689682, longitude:153.0234991, radius:2, fillKey:'gt50'},
+		{name: 'Peter Schuyff, born 1958 in Baarn Netherlands, lives and works in Amsterdam Netherlands', latitude: 52.21115, longitude:5.2931, radius:2, fillKey:'gt50'},
+		{name: 'Julie Ault, born 1957 in Boston MA, lives and works in Joshua Tree CA and New York', latitude: 42.3604823, longitude:-71.0595678, radius:2, fillKey:'gt50'},
+		{name: 'David Robbins, born 1957 in Whitefish Bay WI, lives and works in Shorewood WI', latitude: 43.1133445, longitude:-87.9000856, radius:2, fillKey:'gt50'},
+		{name: 'Joseph Grigely, born 1956 in East Longmeadow MA, lives and works in Chicago IL', latitude: 42.0645396, longitude:-72.5125863, radius:2, fillKey:'gt50'},
+		{name: 'Ken Lum, born 1956 in Vancouver Canada, lives and works in philadelphia PA', latitude: 49.2499987, longitude:-123.1333301, radius:2, fillKey:'gt50'},
+		{name: 'Gaylen Gerber, born 1955 in McAllen TX, lives and works in Chicago IL', latitude: 26.2260035, longitude:-98.2373177181604, radius:2, fillKey:'gt50'},
+		{name: 'Tony Greene curated by Richard Hawkins and Catherine Opie, born 1955 in San Francisco CA Died 1990 in Los Angeles CA', latitude: 37.7789601, longitude:-122.419199, radius:2, fillKey:'gt50'},
+		{name: 'Amy Sillman, born 1955 in Detroit MI, lives and works in Brooklyn NY', latitude: 42.3486635, longitude:-83.0567375, radius:2, fillKey:'gt50'},
+		{name: 'Terry Adkins, born 1953 in Washington DC Died 2014 in Brooklyn NY', latitude: 38.8951148, longitude:-77.0363716, radius:2, fillKey:'gt50'},
+		{name: 'Dawoud Bey, born 1953 in Queens NY, lives and works in Chicago IL', latitude: 40.651018, longitude:-73.792546618181, radius:2, fillKey:'gt50'},
+		{name: 'Stephen Berens, born 1952 in Fort Collins CO, lives and works in Los Angeles CA', latitude: 40.5508527, longitude:-105.0668085, radius:2, fillKey:'gt50'},
+		{name: 'Gretchen Bender, born 1951 in Seaford DE Died 2004 in New York NY', latitude: 38.6574365, longitude:-75.6088567512992, radius:2, fillKey:'gt50'},
+		{name: 'Allan Sekula, born 1951 in Erie PA Died 2013 in Los Angeles CA', latitude: 42.129461, longitude:-80.085239, radius:2, fillKey:'gt50'},
+		{name: 'Gary Indiana, born 1950 in Derry NH, lives and works in New York NY', latitude: 42.8808677, longitude:-71.3264492, radius:2, fillKey:'gt50'},
+		{name: 'Doug Ischar, born 1948 in Honolulu Hawaii, lives and works in Chicago IL', latitude: 21.304547, longitude:-157.8556764, radius:2, fillKey:'gt50'},
+		{name: 'Sherrie Levine, born 1947 in Hazelton PA, lives and works in New York NY', latitude: 41.8986734, longitude:-78.718919, radius:2, fillKey:'gt50'},
+		{name: 'Sarah Charlesworth, born 1947 in East Orange NJ Died 2013 in Hartford CT', latitude: 40.767323, longitude:-74.2048677, radius:2, fillKey:'gt50'},
+		{name: 'Rochelle Feinstein, born 1947 in New York NY, lives and works in New York NY', latitude: 40.7305991, longitude:-73.9865812, radius:2, fillKey:'gt50'},
+		{name: 'Dona Nelson, born 1947 in Grand Island NE, lives and works in Lansdale PA', latitude: 40.9250124, longitude:-98.342007, radius:2, fillKey:'gt50'},
+		{name: 'Charlemagne Palestine, born 1947 in Brooklyn NY, lives and works in Brussels Belgium', latitude: 40.6501038, longitude:-73.9495823, radius:2, fillKey:'gt50'},
+		{name: 'Michel Auder, born 1945 in Soissons France, lives and works in Brooklyn NY', latitude: 49.3816667, longitude:3.3236111, radius:2, fillKey:'gt50'},
+		{name: 'David Hammons, born 1943 in Springfield IL, lives and works in New York NY', latitude: 39.7989763, longitude:-89.6443688, radius:2, fillKey:'gt50'},
+		{name: 'David Diao, born 1943 in Chengdu Sichuan China in New York NY', latitude: 30.6765553, longitude:104.0612783, radius:2, fillKey:'gt50'},
+		{name: 'Philip Hanson, born 1943 in Chicago IL, lives and works in Chicago IL', latitude: 41.8756208, longitude:-87.6243706, radius:2, fillKey:'gt50'},
+		{name: 'Morgan Fisher, born 1942 in Washington DC, lives and works in Santa Monica CA', latitude: 38.8951148, longitude:-77.0363716, radius:2, fillKey:'gt50'},
+		{name: 'Fred Lonidier, born 1942 in Lakeview OR, lives and works in San Diego CA', latitude: 42.1887721, longitude:-120.345792, radius:2, fillKey:'gt50'},
+		{name: 'Jimmie Durham, born 1940 in Washington AR, lives and works in Berlin Germany', latitude: 35.9672625, longitude:-94.2280656, radius:2, fillKey:'gt50'},
+		{name: 'Louise Fishman, born 1939 in Philadelphia PA, lives and works in New York NY', latitude: 39.952335, longitude:-75.163789, radius:2, fillKey:'gt50'},
+		{name: 'Susan Howe, born 1937 in Boston MA, lives and works in Guilford CT', latitude: 42.3604823, longitude:-71.0595678, radius:2, fillKey:'gt50'},
+		{name: 'Sheila Hicks, born 1934 in Hastings NE, lives and works in New York NY', latitude: 40.5861246, longitude:-98.388393, radius:2, fillKey:'gt50'},
+		{name: 'Channa Horwitz, born 1932 in Los Angeles CA Died 2013 in Los Angeles CA', latitude: 34.0536781, longitude:-118.2427025, radius:2, fillKey:'gt50'},
+		{name: 'Pauline Oliveros, born 1932 in Houston TX, lives and works in Kingston NY', latitude: 29.9519265, longitude:-95.5409169840524, radius:2, fillKey:'gt50'},
+		{name: 'Robert Ashley, born 1930 in Ann Arbor MI Died 2014 in New York NY', latitude: 42.2681569, longitude:-83.7312291, radius:2, fillKey:'gt50'},
+		{name: 'John Mason, born 1927 in Madrid NE, lives and works in Los Angeles CA', latitude: 40.8499965, longitude:-101.5435011, radius:2, fillKey:'gt50'},
+		{name: 'Etel Adnan, born 1925 in Beirut Lebanon, lives and works in Sausalito CA', latitude: 33.8959203, longitude:35.47843, radius:2, fillKey:'gt50'},
+		{name: 'Pam Lins, born 1971 in Lake Forest IL,, lives and works in Brooklyn NY', latitude: 42.2586342, longitude:-87.840625, radius:2, fillKey:'gt50'}
+    ], {borderWidth: 0,
+		highlightOnHover: true,highlightBorderColor:'#333',
+		            highlightFillColor: '#444',
+      popupTemplate: function(geo, data) {
+        return "<div class='hoverinfo'>" + data.name + "</div>";
+      }
+    });
+      
+      //sample of the arc plugin
+      map.arc([
+		  {origin: {latitude: 34.0536781, longitude:-118.2427025}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 34.0007104, longitude:-81.0348144}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 37.4137536, longitude:-79.1422464}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 32.7469869, longitude:-117.21177}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 43.0481221, longitude:-76.1474244}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 34.0922335, longitude:-117.435048}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 34.0552886, longitude:-117.7522793}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 42.3709299, longitude:-71.1828321}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 46.5850936, longitude:-94.9606684}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.7305991, longitude:-73.9865812}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 26.1223084, longitude:-80.1433786}, destination: {latitude: 51.5072759, longitude:-0.1276597}},
+		  {origin: {latitude: 23.2160437, longitude:-157.975203}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 41.1670412, longitude:-73.2048348}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 41.9270987, longitude:-73.99611}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 34.0195598, longitude:-118.4869739}, destination: {latitude: 32.7469869, longitude:-117.21177}},
+		  {origin: {latitude: 48.8357506, longitude:2.2399217}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.9009314, longitude:-73.3431727}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 42.0346917, longitude:-93.6201507}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 42.0447388, longitude:-87.6930459}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 44.2022293, longitude:-88.4465361}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 37.7588737, longitude:140.4692432}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 31.7774287, longitude:35.2247239}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 42.3604823, longitude:-71.0595678}, destination: {latitude: 30.2711286, longitude:-97.7436995}},
+		  {origin: {latitude: 34.577882, longitude:-86.8358347843877}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 17.9712148, longitude:-76.7928128}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 43.254687, longitude:-79.8678197}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 57.7247008, longitude:13.1008257}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 33.6676103, longitude:-84.0176904}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.7305991, longitude:-73.9865812}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 36.730738, longitude:-119.699200933824}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 36.8354258, longitude:-76.2981742}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 41.5322592, longitude:-87.2550353}, destination: {latitude: 40.8514822, longitude:-73.8423837057335}},
+		  {origin: {latitude: 37.2333645, longitude:-121.947273077603}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: -33.2138889, longitude:151.5216667}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 18.398755, longitude:-66.1559564}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 41.5833658, longitude:-87.500043}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 36.5748441, longitude:139.2394179}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 49.9732762, longitude:6.524947}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 46.9895435, longitude:6.9292679}, destination: {latitude: 42.3604823, longitude:-71.0595678}},
+		  {origin: {latitude: 39.9622601, longitude:-83.0007065}, destination: {latitude: 41.4457155, longitude:-87.0724971}},
+		  {origin: {latitude: 40.7654301, longitude:-73.8174291}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 14.5906216, longitude:120.9799696}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 40.5065256, longitude:-111.4133091}, destination: {latitude: 34.1270868551444, longitude:-116.319190111495}},
+		  {origin: {latitude: 40.7305991, longitude:-73.9865812}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 47.6038321, longitude:-122.3300624}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 41.5931049, longitude:-81.5267873}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 21.304547, longitude:-158.8556764}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 34.0536781, longitude:-118.2427025}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 42.2681569, longitude:-83.7312291}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 36.607958, longitude:-93.2810170588579}, destination: {latitude: 37.7789601, longitude:-122.419199}},
+		  {origin: {latitude: -33.8548157, longitude:151.2164539}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 25.7742658, longitude:-80.1936589}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 53.4054719, longitude:-2.9805393}, destination: {latitude: 42.3604823, longitude:-71.0595678}},
+		  {origin: {latitude: 39.1014537, longitude:-84.5124602}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 43.0349931, longitude:-87.922497}, destination: {latitude: 43.0349931, longitude:-87.922497}},
+		  {origin: {latitude: 45.5406943, longitude:-77.1004317}, destination:  {latitude: 45.5406943, longitude:-77.1004317}},
+		  {origin: {latitude: 44.4723989, longitude:-73.2114941}, destination: {latitude: 38.384423, longitude:-122.833228177833}},
+		  {origin: {latitude: 34.0536781, longitude:-118.2427025}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 42.4396039, longitude:-76.4968019}, destination: {latitude: 34.0966764, longitude:-117.7197785}},
+		  {origin: {latitude: 41.8012002, longitude:-74.74655}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 29.9499323, longitude:-90.0701156}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 39.1014537, longitude:-84.5124602}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 49.9999952, longitude:8.2710237}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 39.952335, longitude:-75.163789}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 30.3321838, longitude:-81.655651}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 34.0536781, longitude:-118.2427025}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: -27.4689682, longitude:153.0234991}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 42.3604823, longitude:-71.0595678}, destination: {latitude: 42.3604823, longitude:-71.0595678}},
+		  {origin: {latitude: 42.0645396, longitude:-72.5125863}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 49.2499987, longitude:-123.1333301}, destination: {latitude: 39.952335, longitude:-75.163789}},
+		  {origin: {latitude: 26.2260035, longitude:-98.2373177181604}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 37.7789601, longitude:-122.419199}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 42.3486635, longitude:-83.0567375}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 38.8951148, longitude:-77.0363716}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 40.651018, longitude:-73.792546618181}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 40.5508527, longitude:-105.0668085}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 38.6574365, longitude:-75.6088567512992}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 42.129461, longitude:-80.085239}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 42.8808677, longitude:-71.3264492}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 21.304547, longitude:-157.8556764}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 41.8986734, longitude:-78.718919}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.767323, longitude:-74.2048677}, destination: {latitude: 41.765599, longitude:-72.6905850074112}},
+		  {origin: {latitude: 40.7305991, longitude:-73.9865812}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.9250124, longitude:-98.342007}, destination: {latitude: 40.2414952, longitude:-75.2837862}},
+		  {origin: {latitude: 40.6501038, longitude:-73.9495823}, destination: {latitude: 50.8465406, longitude:4.3516841}},
+		  {origin: {latitude: 49.3816667, longitude:3.3236111}, destination: {latitude: 40.6501038, longitude:-73.9495823}},
+		  {origin: {latitude: 39.7989763, longitude:-89.6443688}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 30.6765553, longitude:104.0612783}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 41.8756208, longitude:-87.6243706}, destination: {latitude: 41.8756208, longitude:-87.6243706}},
+		  {origin: {latitude: 38.8951148, longitude:-77.0363716}, destination: {latitude: 34.0195598, longitude:-118.4869739}},
+		  {origin: {latitude: 42.1887721, longitude:-120.345792}, destination: {latitude: 32.7469869, longitude:-117.21177}},
+		  {origin: {latitude: 35.9672625, longitude:-94.2280656}, destination: {latitude: 52.5170365, longitude:13.3888599}},
+		  {origin: {latitude: 39.952335, longitude:-75.163789}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 42.3604823, longitude:-71.0595678}, destination: {latitude: 41.2889866, longitude:-72.6817616}},
+		  {origin: {latitude: 40.5861246, longitude:-98.388393}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 34.0536781, longitude:-118.2427025}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 29.9519265, longitude:-95.5409169840524}, destination: {latitude: 41.9270987, longitude:-73.99611}},
+		  {origin: {latitude: 42.2681569, longitude:-83.7312291}, destination: {latitude: 40.7305991, longitude:-73.9865812}},
+		  {origin: {latitude: 40.8499965, longitude:-101.5435011}, destination: {latitude: 34.0536781, longitude:-118.2427025}},
+		  {origin: {latitude: 33.8959203, longitude:35.47843}, destination: {latitude: 37.8590938, longitude:-122.4852507}},
+		  {origin: {latitude: 42.2586342, longitude:-87.840625}, destination: {latitude: 40.6501038, longitude:-73.9495823}}
+      ], 
+	  {strokeWidth: 0.5, strokeColor: '#333', animationSpeed: 5000, arcSharpness: 0.2});
+       
+     </script>
+</body>

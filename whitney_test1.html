@@ -1,0 +1,138 @@
+<html>
+<head>
+<script src="jquery.min.js"></script>
+<script src="scripts.js"></script>
+<script src="scripts.js" type="text/javascript" charset="utf-8"></script>
+
+<style type="text/css">
+body{font-family: Arial, sans-serif;font-size:9px;}
+.axis path,.axis line {fill: none;stroke:#444;shape-rendering: crispEdges;}
+/*.tick line{fill:none;stroke:none;}*/
+.tick text{fill:#444;}
+g.journal.active{cursor:pointer;}
+text.label{font-size:11px;font-weight:bold;cursor:pointer;}
+text.value{font-size:11px;font-weight:bold;}
+#title{font-size:48px;font-family:Helvetica;color:#444;line-height:200%;margin-left:25px;position:absolute;bottom:20px;}
+#svg{position:absolute; left:0px; top: 20px;}
+#subtitle{position:absolute; left:20px; top:15px; width:250px;color:#444;font-size:12px;}
+#version{position:absolute; left:15px; bottom:10px;color:#aaa;}
+#notes{position:absolute; left:40px; font-size:10px; bottom:10px;width:950px;color:#bbc;}
+</style>
+</head>
+<body>
+	<div id ="title">WHITNEY BIENNIAL 1975 - 2014: Just Ages</div>
+	<div id = "version">V.0</div>
+	<div id = "subtitle">Age of Artist at Year of Biennial</div>
+	<div id = "notes">Data Sources: Data for 2000 - 2014 are taken from the museum's exhibition sites. <br/>Prior to 2000, the data currently comes from the Whitney Catalogues store at: http://www.leftmatrix.com/biennialcats.html, as a result the only artists included are those in the catalogue. <br/>Ages are calculated using the birth year only.</div>
+	<div id = "svg">
+<script type="text/javascript">
+function truncate(str, maxLength, suffix) {
+	if(str.length > maxLength) {
+		str = str.substring(0, maxLength + 1); 
+		str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
+		str = str + suffix;
+	}
+	return str;
+}
+
+var margin = {top: 50, right: 40, bottom: 0, left: 10},
+	width = 950,
+	height = 500;
+
+var start_year = 20,
+	end_year = 90;
+
+var x = d3.scale.linear()
+	.range([0, width]);
+
+var xAxis = d3.svg.axis()
+	.scale(x)
+	.orient("top");
+	
+
+var formatYears = d3.format("0000");
+xAxis.tickFormat(formatYears);
+
+var svg = d3.select("body").append("svg")
+	.attr("width", width + margin.left + margin.right)
+	.attr("height", height + margin.top + margin.bottom)
+	.style("margin-left", margin.left + "px")
+	.append("g")
+	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+d3.json("whitney_test1.json", function(data) {
+	x.domain([start_year, end_year]);
+	var xScale = d3.scale.linear()
+		.domain([start_year, end_year])
+		.range([0, width]);
+
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + 0 + ")")
+		.call(xAxis);
+
+	for (var j = 0; j < data.length; j++) {
+		var g = svg.append("g").attr("class","journal");
+
+		var circles = g.selectAll("circle")
+			.data(data[j]['articles'])
+			.enter()
+			.append("circle");
+
+		var text = g.selectAll("text")
+			.data(data[j]['articles'])
+			.enter()
+			.append("text");
+
+		var rScale = d3.scale.linear()
+			//.domain([0, d3.max(data[j]['articles'], function(d) { return d[1]/2; })])
+			.domain([1,8])
+			.range([5, 140]);
+
+		circles
+			.attr("cx", function(d, i) { return xScale(d[0]); })
+			.attr("cy", j*25+20)
+			.attr("r", function(d) { return Math.sqrt(rScale(d[1])/3.14); })
+			//if value is 0, then fill is white. 1 is regular color and 5px
+			.style("fill", function(d){
+				if(d[1]==0){return "white"}
+				else {return data[j]['color']};
+			});
+			//.style("fill", data[j]['color']);
+
+		text
+			.attr("y", j*25+22)
+			.attr("x",function(d, i) { return xScale(d[0])-5; })
+			.attr("class","value")
+			.text(function(d){ return d[1]; })
+			.style("fill", data[j]['color'])
+			.style("display","none");
+
+		g.append("text")
+			.attr("y", j*25+23)
+			.attr("x",width)
+			.attr("class","label")
+			.text(data[j]['name'])
+			.style("fill", data[j]['color'])
+			.on("mouseover", mouseover)
+			.on("mouseout", mouseout);
+	};
+
+	function mouseover(p) {
+		var g = d3.select(this).node().parentNode;
+		d3.select(g).selectAll("circle").style("display","none");
+		d3.select(g).selectAll("text.value").style("display","block");
+	}
+
+	function mouseout(p) {
+		var g = d3.select(this).node().parentNode;
+		d3.select(g).selectAll("circle").style("display","block");
+		d3.select(g).selectAll("text.value").style("display","none");
+	}
+});
+
+</script>
+</div>
+</body>
+</html>
