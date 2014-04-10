@@ -46,7 +46,7 @@ function truncate(str, maxLength, suffix) {
 
 var margin = {top: 50, right: 40, bottom: 0, left: 10},
 	width = 950,
-	height = 500;
+	height = 520;
 
 var start_year = 20,
 	end_year = 90;
@@ -107,7 +107,9 @@ d3.json("whitney_test1.json", function(data) {
 			.style("fill", function(d){
 				if(d[1]==0){return "white"}
 				else {return data[j]['color']};
-			});
+			})			
+			.on("mouseover", mouseover)
+			.on("mouseout", mouseout);
 			//.style("fill", data[j]['color']);
 
 		text
@@ -123,17 +125,20 @@ d3.json("whitney_test1.json", function(data) {
 			.attr("x",width)
 			.attr("class","label")
 			.text(data[j]['name'])
-			.style("fill", data[j]['color'])
-			.on("mouseover", mouseover)
-			.on("mouseout", mouseout);
+			.style("fill", data[j]['color']);
 	};
 
 	function mouseover(p) {
-		var g = d3.select(this).node().parentNode;
-		d3.select(g).selectAll("circle").style("display","none");
+		var g = d3.select(this).attr("fill","none");
 		d3.select(g).selectAll("text.value").style("display","block");
 	}
-
+//
+//function mouseover(p) {
+//	d3.select(this).attr("fill", "red");
+//	var g = d3.select(this).node().parentNode;
+//	d3.select(g).selectAll("circle").style("display","none");
+//	d3.select(g).selectAll("text.value").style("display","block");
+//}
 	function mouseout(p) {
 		var g = d3.select(this).node().parentNode;
 		d3.select(g).selectAll("circle").style("display","block");
