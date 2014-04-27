@@ -1,11 +1,12 @@
 function test(){
-	console.log("test")
+	console.log("connected to js")
 }
 
 test()
+var mapShown = true
 
 var artists = []
-var csv = "DataSoFar_04252014.csv"
+var csv = "DataSoFar_04262014.csv"
 d3.csv(csv, function(data){
 	
 	for(artist in data){
@@ -13,11 +14,34 @@ d3.csv(csv, function(data){
 	}
 	//console.log(artists)
 	drawYears()
-	drawAges()
+	drawAges(artists)
 	var calendarTallyData = dotCalendarTally(artists)
 	//console.log(calendarTallyData)	
-	dotCalendarDraw(calendarTallyData)
-	drawMap(artists)
+	//dotCalendarDraw(calendarTallyData)
+	var mapData = mapTally(filterData("All","All", "All"))
+	buildAgeDict(artists)
+	drawMap(mapData)
+		
+	d3.selectAll(".menu-calendar")
+	.on("click", function(){
+		d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+		
+		d3.selectAll("#main-viz svg").remove()
+		dotCalendarDraw(calendarTallyData)
+		mapShown = false
+		console.log(mapShown)
+	})
+	
+	d3.selectAll(".menu-map")
+	.on("click", function(){
+		d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+		
+		d3.selectAll("#main-viz svg").remove()
+		drawMap(mapData)
+		mapShown = true
+	})
+	
+
 })
 
 function filterData(year, age, birthplace){
@@ -144,7 +168,7 @@ function dotCalendarDraw(dataset){
 	.delay(function(d, i) { return i / 2 *3; })
 	.attr("r", function(d,i){
 		//console.log(d[2])
-		return rScale(d[4])
+		return rScale(d[2])
 	})
 	.attr("opacity", function(d){
 		return 1
@@ -226,22 +250,65 @@ function drawYears(){
 	})
 	.on("click", function(d,i){
 		//console.log(filterData(d,"All", "All").length)
-		console.log(filterData(d,"All", "All"))
-		var newTable = buildTable(filterData(d,"All", "All"))
+		//console.log(filterData(d,"All", "All"))
+		var filteredData= filterData(d,"All", "All")
+		var newTable = buildTable(filteredData)
 		d3.select("#details").html("<span style = \"font-size:16px\">There were "+filterData(d,"All", "All").length+" artists in the "+d+" Biennial</span><br/>"+newTable)
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
-		
-	})
 
-	
+		if(mapShown == true){
+			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+			d3.selectAll("#main-viz svg").remove()
+			drawMap(mapTally(filteredData))
+		}
+	})
 }
-function drawAges(){
+function buildAgeDict(dataset){
+	var ages = []
+	for(age in dataset){
+		var currentAge = (dataset[age]["age at the time"])
+		if(currentAge != "none"){
+		if(ages[age]==undefined){
+			ages[age]=[]
+			ages[age].push(currentAge)
+		}else{
+			ages[age].push(currentAge)
+		}
+	}
+	}
+	//var ageDict = []
+//	for (age in ages){
+//		ageDict.push([ages[age], ages[age].length])
+//	}
+	//console.log(ageDict)
+//	return ageDict
+return ages
+}
+
+function drawAges(dataset){
 	//console.log("ages")
 	//build age array
+	//var ages = []
+	//for(var age = 20; age < 90; age++){
+	//	ages.push(age)
+	//}
 	var ages = []
-	for(var age = 20; age < 90; age++){
-		ages.push(age)
+	for(age in dataset){
+		if(dataset[age]["age at the time"] != "none"){
+			var currentAge = (dataset[age]["age at the time"])
+			if(ages[age]==undefined){
+				ages[age]=[]
+				ages[age].push(currentAge)
+			}else{
+				ages[age].push(currentAge)
+			}
+		}
 	}
+//	var ageDict = []
+//	for(age in ages){
+//		ageDict.push(ages[age][0], ages[age].length)
+//	}
+//	console.log(ageDict)
 	var specialAges = [20,30, 40, 50, 60, 89]
 	//var ages = ["20","30","40","50","60", "89"]
 	var h = 20
@@ -261,7 +328,7 @@ function drawAges(){
 	.data(ages)
 	.enter()
 	.append("text")
-	.text(function(d){
+	.text(function(d,i){
 		return d})
 	.attr("y", 20)
 	.attr("x", function(d,i){
@@ -273,7 +340,7 @@ function drawAges(){
 	.delay(function(d, i) { return i / 2 * 20; })
 	.style("opacity",function(d,i){
 		if(specialAges.indexOf(d) > -1){
-			console.log(d)
+			//console.log(d)
 			return 1
 		}else{
 			return .3
@@ -287,52 +354,115 @@ function drawAges(){
 	.on("mouseout", function(d,i){
 		d3.select(this).style("opacity",function(d,i){
 			if(specialAges.indexOf(d) > -1){
-			console.log(d)
+			//console.log(d)
 			return 1
 		}else{
 			return .3
 		}})
 	})
 	.on("click", function(d,i){
-		console.log(filterData("All",d, "All"))
-		var newTable = buildTable(filterData("All",d, "All"))
+		var filteredData = filterData("All",d, "All")
+		var newTable = buildTable(filteredData)
+		var totalArtists = artists.length
+		var percentage = d3.round(filteredData.length/totalArtists*100)
 		if(filterData("All",d, "All").length==1){
 		d3.select("#details").html("<span style = \"font-size:16px\">There was only "+filterData("All",d, "All").length+" artist aged "+d+" between 1973 - 2014</span><br/>"+newTable)
 		}else{
-		d3.select("#details").html("<span style = \"font-size:16px\">There were "+filterData("All",d, "All").length+" artists aged "+d+" between 1973 - 2014</span><br/>"+newTable)
+		d3.select("#details").html("<span style = \"font-size:16px\">"+filterData("All",d, "All").length+" or "+percentage+"% artists were aged "+d+" between 1973 - 2014</span><br/>"+newTable)
 		}
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
-		
+
+		if(mapShown == true){
+			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+			
+			d3.selectAll("#main-viz svg").remove()
+			drawMap(mapTally(filteredData))
+		}
 	})
 }
 
+function mapTally(targetCountryStatusSector){
+	//tally by country
+	var byCountry = {}
+	for(visa in targetCountryStatusSector){
+		var currentCountry = targetCountryStatusSector[visa]["birthplace state"]
+		if(byCountry[currentCountry]==undefined){
+			byCountry[currentCountry]=[]
+			byCountry[currentCountry].push(targetCountryStatusSector[visa])
+		}else{
+			byCountry[currentCountry].push(targetCountryStatusSector[visa])
+		}
+	}
+	//console.log(byCountry)
+	var mapStats=[]
+	for(country in byCountry){
+		var currentCountry = byCountry[country]
+		mapStats.push([country.toLowerCase(), byCountry[country].length])
+		//console.log(country.toLowerCase(), byCountry[country].length)
+	}
+	return mapStats
+}
+
+
 function drawMap(dataset){
-	var width = 650;
-	var height = 400;
+	console.log("map")
+	var width = 1100;
+	var height = 600;
 	var mpa = d3.map();
 	var projection = d3.geo.mercator()
 		.scale(120)
 		.translate([width/2-40, height/2+40]);
 	var path = d3.geo.path()
 		.projection(projection);
-	var map = d3.select("div.map")
+	var map = d3.select("body #main-viz")
 		.append("svg:svg")
 		.attr("class", "map")
 		.attr("width", width)
 		.attr("height", height)
 		.append("svg:g")
 		
-	d3.json("required/world.geojson", function(json){
-		for(var i = 0; i < dataset.length; i++){
-
-			for(var j = 0; j < json.features.length; j++){
-				var jsonCountry = json.features[j].properties.name.toLowerCase();
-
-				}				
+		d3.json("required/world_filtered.geojson", function(json){
+			var mapValues = []
+			for(var i = 0; i < dataset.length; i++){
+				var dataCountry = dataset[i][0].toLowerCase();
+				var dataValue = dataset[i][1];
+				mapValues.push(dataValue);
+				for(var j = 0; j < json.features.length; j++){
+					var jsonCountry = json.features[j].properties.name.toLowerCase();
+					if(dataCountry.toLowerCase() == jsonCountry.toLowerCase()){
+						json.features[j].properties.value = dataValue;
+						break;
+					}				
+				}
 			}
-			
-		}	
-)}
+			//console.log(json.features)
+var maxColor = "black"
+var color = d3.scale.sqrt().range(["#fff", maxColor])	
+	color.domain([0,d3.max(mapValues)])
+	map.selectAll("path")
+		.data(json.features)
+		.enter()
+		.append("path")
+		.attr("d", path)
+		//.style("stroke", "#fff")
+		.style("fill", function(d){
+			var value = d.properties.value;
+			if(d.properties.name == "United States"){
+				return "#fff"
+			}
+			if(value){
+				return color(value);
+			}else{
+				return "#fff";
+			}
+		})
+		.attr("opacity", 0)
+		.transition()
+		.duration(2000)
+		.attr("opacity",1)
+		
+		})
+}
 
 
 //functions for text formatting
@@ -340,7 +470,7 @@ function buildNameList(o){
 	var returnString = ""
 	for(i in o){
 		var artistname = titleCase(o[i]["name"])
-		console.log(artistname)
+		//console.log(artistname)
 		returnString = returnString +" "+ artistname
 	}
 	return returnString
