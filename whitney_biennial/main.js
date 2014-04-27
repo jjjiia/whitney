@@ -12,10 +12,12 @@ d3.csv(csv, function(data){
 		artists.push(data[artist])
 	}
 	//console.log(artists)
-	
+	drawYears()
+	drawAges()
 	var calendarTallyData = dotCalendarTally(artists)
 	//console.log(calendarTallyData)	
 	dotCalendarDraw(calendarTallyData)
+	drawMap(artists)
 })
 
 function filterData(year, age, birthplace){
@@ -178,7 +180,7 @@ function dotCalendarDraw(dataset){
 		}
 	})
 }
-drawYears()
+
 function drawYears(){
 	//console.log("years")
 	var years = ["1973", "1975", "1977", "1979", "1981", "1983", "1985", "1987", "1989", "1991", "1993", "1995", "1997", "2000", "2002", "2004", "2006", "2008", "2010", "2012", "2014"]
@@ -209,12 +211,18 @@ function drawYears(){
 	.attr("x", function(d,i){
 		return 0
 	})
-	.style("opacity", .3)
-	.on("mouseover",function(d,i){
-		d3.select(this).style("opacity", 1)
+	.attr("opacity",0)
+	.transition()
+	.duration(1000)
+	.delay(function(d, i) { return i / 2 * 260; })
+	.attr("opacity",1)
+	
+	
+	yearlabels.selectAll("text").on("mouseover",function(d,i){
+		d3.select(this).style("opacity", .3)
 	})
 	.on("mouseout",function(d,i){
-		d3.select(this).style("opacity", .3)
+		d3.select(this).style("opacity", 1)
 	})
 	.on("click", function(d,i){
 		//console.log(filterData(d,"All", "All").length)
@@ -224,14 +232,9 @@ function drawYears(){
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
 		
 	})
-	
-	yearlabels.selectAll("text").attr("opacity", 0)
-	.transition()
-	.duration(1000)
-	.attr("opacity",1)
+
 	
 }
-drawAges()
 function drawAges(){
 	//console.log("ages")
 	//build age array
@@ -264,6 +267,10 @@ function drawAges(){
 	.attr("x", function(d,i){
 		return ageScale(d)
 	})
+	.attr("opacity",0)
+	.transition()
+	.duration(5000)
+	.delay(function(d, i) { return i / 2 * 20; })
 	.style("opacity",function(d,i){
 		if(specialAges.indexOf(d) > -1){
 			console.log(d)
@@ -272,6 +279,8 @@ function drawAges(){
 			return .3
 		}
 	})
+	
+	ageLabels.selectAll("text")
 	.on("mouseover", function(d,i){
 		d3.select(this).style("opacity", 1)
 	})
@@ -297,12 +306,44 @@ function drawAges(){
 	})
 }
 
+function drawMap(dataset){
+	var width = 650;
+	var height = 400;
+	var mpa = d3.map();
+	var projection = d3.geo.mercator()
+		.scale(120)
+		.translate([width/2-40, height/2+40]);
+	var path = d3.geo.path()
+		.projection(projection);
+	var map = d3.select("div.map")
+		.append("svg:svg")
+		.attr("class", "map")
+		.attr("width", width)
+		.attr("height", height)
+		.append("svg:g")
+		
+	d3.json("required/world.geojson", function(json){
+		for(var i = 0; i < dataset.length; i++){
+
+			for(var j = 0; j < json.features.length; j++){
+				var jsonCountry = json.features[j].properties.name.toLowerCase();
+
+				}				
+			}
+			
+		}	
+)}
+
+
+//functions for text formatting
 function buildNameList(o){
 	var returnString = ""
 	for(i in o){
 		var artistname = titleCase(o[i]["name"])
+		console.log(artistname)
+		returnString = returnString +" "+ artistname
 	}
-	returnString = returnString+ artistname
+	return returnString
 }
 
 function buildTable(o) {

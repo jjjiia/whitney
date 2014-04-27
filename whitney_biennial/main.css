@@ -10,11 +10,10 @@ body{
 	float:top;
 	letter-spacing:5px;
 	height:80px;
-	
 }
 #title-text{
 	font-size:24px;
-	margin-left:10px;
+	margin-left:20px;
 	margin-top:10px;
 	position:relative;
 	float:top;
@@ -27,12 +26,17 @@ body{
 	margin-left:10px;
 }
 #title-info{
-	width:100px;
+	width:15px;
+	height:15px;
+	border-radius:50%;
 	font-size:10px;
+	line-height:160%;
+	background-color:#000;
 	position:relative;
 	float:right;
 	text-align:right;
 	margin-right:10px;
+	color:#fff;
 }
 #navLabel{
 	width:40px;
@@ -46,7 +50,7 @@ body{
 }
 #top-nav{
 	position:absolute;
-	top:40px;
+	top:540px;
 	font-size:10px;
 	left:25px;
 	z-index:99;
@@ -69,8 +73,14 @@ body{
 	width:90%;
 	margin-left:20px;
 	position:absolute;
-	top:550px;
+	top:570px;
 	overflow:auto;
+}
+#ageLabel{
+	position:absolute;
+	top:550px;
+	left:60px;
+	font-size:10px;
 }
 .axis text {
   font: 10px sans-serif;
