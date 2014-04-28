@@ -27,31 +27,35 @@ Data from whitney biennial website.<br/>Made using datamaps.
   
      <script>
        //basic map config with custom fills, mercator projection
-      var map = new Datamap({
-        scope: 'world',
-        element: document.getElementById('container1'),
-        projection: 'mercator',
-		bubblesConfig: {
-		        borderWidth: 0,
-				borderColor: 'red',
-				},
-		geographyConfig: {
-		    popupOnHover: false,
-		    highlightOnHover: false
-		  },
-        fills: {
-          defaultFill: '#ddd',
-          lt50: '#ddd',
-		  gt50: '#555'
-        },
-        
-        data: {
-          USA: {fillKey: 'lt50' }   
-        }
-      })
 	
 var csv = "testData.csv"
 d3.csv(csv, function(data){
+	drawDataMap(data)
+		})
+		
+function drawDataMap(data){
+    var map = new Datamap({
+      scope: 'world',
+      element: document.getElementById('container1'),
+      projection: 'mercator',
+	bubblesConfig: {
+	        borderWidth: 0,
+			borderColor: 'red',
+			},
+	geographyConfig: {
+	    popupOnHover: false,
+	    highlightOnHover: false
+	  },
+      fills: {
+        defaultFill: '#ddd',
+        lt50: '#ddd',
+	  gt50: '#555'
+      },
+      
+      data: {
+        USA: {fillKey: 'lt50' }   
+      }
+    })
 	var artists = []
 	for(artist in data){
 		artists.push({
@@ -65,14 +69,11 @@ d3.csv(csv, function(data){
 					}
 				})
 	}
-	
-		//console.log("i",artists[i]["lat1"],artists[i]["lat2"])
 			map.arc(
 				artists, 
 			{
-				strokeWidth: 0.5, strokeColor: '#333', animationSpeed: 1000, arcSharpness: 0.5
+				strokeWidth: 0.5, strokeColor: '#333', animationSpeed: 1000, arcSharpness: 0.2
 			});
-		})
-
+		}
 </script>
 </body>

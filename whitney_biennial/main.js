@@ -6,7 +6,7 @@ test()
 var mapShown = true
 
 var artists = []
-var csv = "DataSoFar_04262014.csv"
+var csv = "DataSoFar_04262014_trimed2.csv"
 d3.csv(csv, function(data){
 	
 	for(artist in data){
@@ -20,7 +20,7 @@ d3.csv(csv, function(data){
 	//dotCalendarDraw(calendarTallyData)
 	var mapData = mapTally(filterData("All","All", "All"))
 	buildAgeDict(artists)
-	drawMap(mapData)
+//	drawMap(mapData)
 		
 	d3.selectAll(".menu-calendar")
 	.on("click", function(){
@@ -41,8 +41,57 @@ d3.csv(csv, function(data){
 		mapShown = true
 	})
 	
+	
+	setTimeout(function(){drawDataMap(filterData("All","All", "All"), 1000, "#eee", "#222")},0)
 
+	//setTimeout(function(){d3.selectAll("#main-viz svg").remove()},10000);
+	//setTimeout(drawDataMap(data),30000);
 })
+
+
+function drawDataMap(data, speed, fill, stroke){
+	console.log("datamap")
+    var map = new Datamap({
+      scope: 'world',
+      element: document.getElementById('main-viz'),
+      projection: 'mercator',
+		bubblesConfig: {
+		        borderWidth: 0,
+				borderColor: 'red',
+				},
+		geographyConfig: {
+		    popupOnHover: false,
+		    highlightOnHover: false,
+			borderWidth: .2,
+			//borderColor: '#000',
+			fillOpacity: 0.02
+		  },
+	      fills: {
+	        defaultFill: fill,
+	      },
+	      data: {
+	        USA: {fillKey: 'defaultFill' }   
+	      }
+    })
+	var artists = []
+	for(artist in data){
+		artists.push({
+					origin: {
+						latitude: data[artist]["b latitude"],
+						longitude: data[artist]["b longitude"]
+					},
+					destination: {
+						latitude: data[artist]["w latitude"],
+						longitude: data[artist]["w longitude"]
+					}
+				})
+	}
+		var colors = ["#222", "#888", "#666", "#888"]
+
+		var arcAttributes = {strokeWidth: .2, strokeColor:stroke, animationSpeed: speed, arcSharpness: 0.2, opacity: 0}
+		map.arc(artists, arcAttributes)
+}
+
 
 function filterData(year, age, birthplace){
 	targetYear =[]
@@ -259,7 +308,8 @@ function drawYears(){
 		if(mapShown == true){
 			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
 			d3.selectAll("#main-viz svg").remove()
-			drawMap(mapTally(filteredData))
+			//drawMap(mapTally(filteredData))
+			drawDataMap(filteredData, 1000, "#eee", "#222")
 		}
 	})
 }
@@ -378,7 +428,8 @@ function drawAges(dataset){
 			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
 			
 			d3.selectAll("#main-viz svg").remove()
-			drawMap(mapTally(filteredData))
+			//drawMap(mapTally(filteredData))
+			drawDataMap(filteredData, 1000, "#eee", "#222")
 		}
 	})
 }

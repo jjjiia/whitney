@@ -70,7 +70,8 @@ a:hover {color:black; text-decoration:underline;}
 	margin-left:20px;
 }
 #main-viz{
-	width:1000px;
+	width:800px;
+	height:500px;
 	position:absolute;
 	top:50px;
 	left:30px;
