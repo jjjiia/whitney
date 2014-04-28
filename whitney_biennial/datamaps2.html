@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+	<title>2014 Map</title>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <!-- I recommend you host this file on your own, since this will change without warning -->
+  <script src="http://datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
+  <style type = "text/css">
+  body{font-family: Arial, sans-serif;font-size:9px;}
+  #title{font-size:48px;font-family:Helvetica;color:#444;line-height:200%;margin-left:25px;position:absolute;bottom:20px;}
+  #notes{position:absolute; left:40px; font-size:10px; bottom:10px;width:950px;color:#aaa;font-family:Helvetica;}
+  #subtitle{position:absolute; left:20px; top:15px; width:250px;color:#444;font-size:10px;}
+  #version{position:absolute; left:15px; bottom:10px;color:#aaa;}
+  
+  </style>
+  </head>
+<body>  
+  <div id = "notes">
+Data from whitney biennial website.<br/>Made using datamaps.
+  </div>
+<div id = "version">V.0</div>
+  
+  <div id="container1" style="position:absolute;top:-50px; width: 95%; max-height:100%;"></div>
+  <div id ="title">WHITNEY BIENNIAL 2014</div>
+<div id = "subtitle">Rollover dots to see artist</div>
+  
+     <script>
+       //basic map config with custom fills, mercator projection
+      var map = new Datamap({
+        scope: 'world',
+        element: document.getElementById('container1'),
+        projection: 'mercator',
+		bubblesConfig: {
+		        borderWidth: 0,
+				borderColor: 'red',
+				},
+		geographyConfig: {
+		    popupOnHover: false,
+		    highlightOnHover: false
+		  },
+        fills: {
+          defaultFill: '#ddd',
+          lt50: '#ddd',
+		  gt50: '#555'
+        },
+        
+        data: {
+          USA: {fillKey: 'lt50' }   
+        }
+      })
+	
+var csv = "testData.csv"
+d3.csv(csv, function(data){
+	var artists = []
+	for(artist in data){
+		artists.push({
+					origin: {
+						latitude: data[artist]["lat1"],
+						longitude: data[artist]["lng1"]
+					},
+					destination: {
+						latitude: data[artist]["lat2"],
+						longitude: data[artist]["lng2"]
+					}
+				})
+	}
+	
+		//console.log("i",artists[i]["lat1"],artists[i]["lat2"])
+			map.arc(
+				artists, 
+			{
+				strokeWidth: 0.5, strokeColor: '#333', animationSpeed: 1000, arcSharpness: 0.5
+			});
+		})
+
+</script>
+</body>

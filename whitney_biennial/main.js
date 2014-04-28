@@ -12,7 +12,7 @@ d3.csv(csv, function(data){
 	for(artist in data){
 		artists.push(data[artist])
 	}
-	//console.log(artists)
+	console.log(artists)
 	drawYears()
 	drawAges(artists)
 	var calendarTallyData = dotCalendarTally(artists)
@@ -332,7 +332,9 @@ function drawAges(dataset){
 		return d})
 	.attr("y", 20)
 	.attr("x", function(d,i){
+		if(!isNaN(d)){
 		return ageScale(d)
+	}
 	})
 	.attr("opacity",0)
 	.transition()
@@ -366,9 +368,9 @@ function drawAges(dataset){
 		var totalArtists = artists.length
 		var percentage = d3.round(filteredData.length/totalArtists*100)
 		if(filterData("All",d, "All").length==1){
-		d3.select("#details").html("<span style = \"font-size:16px\">There was only "+filterData("All",d, "All").length+" artist aged "+d+" between 1973 - 2014</span><br/>"+newTable)
+		d3.select("#details").html("<span style = \"font-size:16px\">There was only "+filterData("All",d, "All").length+" artist aged "+d+"</span><br/>"+newTable)
 		}else{
-		d3.select("#details").html("<span style = \"font-size:16px\">"+filterData("All",d, "All").length+" or "+percentage+"% artists were aged "+d+" between 1973 - 2014</span><br/>"+newTable)
+		d3.select("#details").html("<span style = \"font-size:16px\">"+filterData("All",d, "All").length+" or "+percentage+"% artists were aged "+d+"</span><br/>"+newTable)
 		}
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
 
@@ -403,15 +405,14 @@ function mapTally(targetCountryStatusSector){
 	return mapStats
 }
 
-
 function drawMap(dataset){
 	console.log("map")
 	var width = 1100;
 	var height = 600;
 	var mpa = d3.map();
-	var projection = d3.geo.mercator()
-		.scale(120)
-		.translate([width/2-40, height/2+40]);
+	var projection = d3.geo.times()
+		.scale(200)
+		.translate([width/2-80, height/2]);
 	var path = d3.geo.path()
 		.projection(projection);
 	var map = d3.select("body #main-viz")
@@ -456,12 +457,21 @@ var color = d3.scale.sqrt().range(["#fff", maxColor])
 				return "#fff";
 			}
 		})
-		.attr("opacity", 0)
+//		.attr("opacity", 0)
 		.transition()
 		.duration(2000)
 		.attr("opacity",1)
-		
-		})
+	
+	map.selectAll("path")
+	.on("click", function(d,i){
+		var Country = json.features[i].properties.name
+		console.log(Country)
+		var filteredData = filterData("All", "All", Country)
+		console.log(filteredData)
+		var newTable = buildTable(filteredData)
+		d3.select("#details").html(newTable)
+	})
+	})
 }
 
 
@@ -486,16 +496,18 @@ var birthplaceCity = titleCase(o[i]["birthplace city"])
 var birthplaceState = titleCase(o[i]["birthplace state"])
 var workplaceCity = titleCase(o[i]["work place city"])
 var workplaceState = titleCase(o[i]["work place state"])
-
+var birthYear = titleCase(o[i]["birthyear"])
+var age = titleCase(o[i]["age at the time"])
+var biennialYear = titleCase(o[i]["year of exhibition"])
 if(birthplaceCity == workplaceCity && birthplaceState == workplaceState){
 	currentString =artistname+" was born in and works in "+birthplaceCity+", "+birthplaceState+"<br/>"
 }
 else{
-	currentString = artistname+" was born in "+birthplaceCity+", "+birthplaceState + " and works in "+ workplaceCity+", "+workplaceState+"<br/>"
+	currentString =biennialYear+": "+ artistname+" born "+birthYear+", age:"+age+", "+birthplaceState + " lives and works in "+ workplaceCity+", "+workplaceState+"<br/>"
 }
 returnString = returnString +currentString
 }
-return returnString 
+return returnString
 }
 
 
