@@ -77,6 +77,20 @@ a:hover {color:black; text-decoration:underline;}
 	left:30px;
 	cursor:pointer;
 }
+
+#arcs {
+	position:relative;
+	width:800px;
+	height:500px;
+}
+
+#arcs svg {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:800px;
+	height:500px;
+}
 #details{
 	font-size:10px;
 	width:400px;

@@ -1,5 +1,5 @@
 function test(){
-	console.log("connected to js")
+	//console.log("connected to js")
 }
 
 test()
@@ -12,9 +12,9 @@ d3.csv(csv, function(data){
 	for(artist in data){
 		artists.push(data[artist])
 	}
-	console.log(artists)
-	drawYears()
-	drawAges(artists)
+	//console.log(artists)
+	drawYears(2000,1000)
+	drawAges(artists,100,1)
 	var calendarTallyData = dotCalendarTally(artists)
 	//console.log(calendarTallyData)	
 	//dotCalendarDraw(calendarTallyData)
@@ -29,7 +29,7 @@ d3.csv(csv, function(data){
 		d3.selectAll("#main-viz svg").remove()
 		dotCalendarDraw(calendarTallyData)
 		mapShown = false
-		console.log(mapShown)
+		//console.log(mapShown)
 	})
 	
 	d3.selectAll(".menu-map")
@@ -41,19 +41,36 @@ d3.csv(csv, function(data){
 		mapShown = true
 	})
 	
-	
-	setTimeout(function(){drawDataMap(filterData("All","All", "All"), 1000, "#eee", "#222")},0)
 
-	//setTimeout(function(){d3.selectAll("#main-viz svg").remove()},10000);
-	//setTimeout(drawDataMap(data),30000);
+	setTimeout(function(){drawDataMap(filterData("1973","All", "All"), 0, "#efefef", "none")},0)
+	setTimeout(function(){drawDataMap(filterData("1975","All", "All"), 1000, "none", "#444")},0)	
+	setTimeout(function(){drawDataMap(filterData("1977","All", "All"), 1000, "none", "#444")},500)	
+	setTimeout(function(){drawDataMap(filterData("1979","All", "All"), 1000, "none", "#444")},1000)
+	setTimeout(function(){drawDataMap(filterData("1981","All", "All"), 1000, "none", "#444")},1500)
+	setTimeout(function(){drawDataMap(filterData("1983","All", "All"), 1000, "none", "#444")},2000)
+	setTimeout(function(){drawDataMap(filterData("1985","All", "All"), 1000, "none", "#444")},2500)
+	setTimeout(function(){drawDataMap(filterData("1987","All", "All"), 1000, "none", "#444")},3000)
+	setTimeout(function(){drawDataMap(filterData("1989","All", "All"), 1000, "none", "#444")},3500)
+	setTimeout(function(){drawDataMap(filterData("1991","All", "All"), 1000, "none", "#444")},4000)
+	setTimeout(function(){drawDataMap(filterData("1993","All", "All"), 1000, "none", "#444")},4500)
+	setTimeout(function(){drawDataMap(filterData("1995","All", "All"), 1000, "none", "#444")},5000)
+	setTimeout(function(){drawDataMap(filterData("1997","All", "All"), 1000, "none", "#444")},5500)
+	setTimeout(function(){drawDataMap(filterData("2000","All", "All"), 1000, "none", "#444")},6250)
+	setTimeout(function(){drawDataMap(filterData("2002","All", "All"), 1000, "none", "#444")},6750)
+	setTimeout(function(){drawDataMap(filterData("2004","All", "All"), 1000, "none", "#444")},7250)
+	setTimeout(function(){drawDataMap(filterData("2006","All", "All"), 1000, "none", "#444")},7750)
+	setTimeout(function(){drawDataMap(filterData("2008","All", "All"), 1000, "none", "#444")},8250)
+	setTimeout(function(){drawDataMap(filterData("2010","All", "All"), 1000, "none", "#444")},8750)
+	setTimeout(function(){drawDataMap(filterData("2012","All", "All"), 1000, "none", "#444")},9250)
+	setTimeout(function(){drawDataMap(filterData("2014","All", "All"), 1000, "none", "#444")},9750)
 })
 
 
 function drawDataMap(data, speed, fill, stroke){
-	console.log("datamap")
+	//console.log("datamap")
     var map = new Datamap({
       scope: 'world',
-      element: document.getElementById('main-viz'),
+      element: document.getElementById('arcs'),
       projection: 'mercator',
 		bubblesConfig: {
 		        borderWidth: 0,
@@ -63,8 +80,8 @@ function drawDataMap(data, speed, fill, stroke){
 		    popupOnHover: false,
 		    highlightOnHover: false,
 			borderWidth: .2,
-			//borderColor: '#000',
-			fillOpacity: 0.02
+			borderColor: 'none',
+			fillOpacity: 0
 		  },
 	      fills: {
 	        defaultFill: fill,
@@ -86,8 +103,6 @@ function drawDataMap(data, speed, fill, stroke){
 					}
 				})
 	}
-		var colors = ["#222", "#888", "#666", "#888"]
-
 		var arcAttributes = {strokeWidth: .2, strokeColor:stroke, animationSpeed: speed, arcSharpness: 0.2, opacity: 0}
 		map.arc(artists, arcAttributes)
 }
@@ -254,7 +269,7 @@ function dotCalendarDraw(dataset){
 	})
 }
 
-function drawYears(){
+function drawYears(duration, delay){
 	//console.log("years")
 	var years = ["1973", "1975", "1977", "1979", "1981", "1983", "1985", "1987", "1989", "1991", "1993", "1995", "1997", "2000", "2002", "2004", "2006", "2008", "2010", "2012", "2014"]
 	var h =500
@@ -286,8 +301,8 @@ function drawYears(){
 	})
 	.attr("opacity",0)
 	.transition()
-	.duration(1000)
-	.delay(function(d, i) { return i / 2 * 260; })
+	.duration(duration)
+	.delay(function(d, i) { return i / 2 * delay; })
 	.attr("opacity",1)
 	
 	
@@ -309,7 +324,7 @@ function drawYears(){
 			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
 			d3.selectAll("#main-viz svg").remove()
 			//drawMap(mapTally(filteredData))
-			drawDataMap(filteredData, 1000, "#eee", "#222")
+			drawDataMap(filteredData, 100, "#eee", "#222")
 		}
 	})
 }
@@ -335,7 +350,7 @@ function buildAgeDict(dataset){
 return ages
 }
 
-function drawAges(dataset){
+function drawAges(dataset, duration, delay){
 	//console.log("ages")
 	//build age array
 	//var ages = []
@@ -388,8 +403,8 @@ function drawAges(dataset){
 	})
 	.attr("opacity",0)
 	.transition()
-	.duration(5000)
-	.delay(function(d, i) { return i / 2 * 20; })
+	.duration(duration)
+	.delay(function(d, i) { return i / 2 * delay; })
 	.style("opacity",function(d,i){
 		if(specialAges.indexOf(d) > -1){
 			//console.log(d)
