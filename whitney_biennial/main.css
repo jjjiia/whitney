@@ -1,10 +1,14 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('required/Roboto/Roboto-Medium.ttf');
+}
 body{
 	font-family: 'Roboto', 'sans-serif';
 	font-size:18px;
 	overflow:hidden;
 	
 }
-a:link{color:inherit;}
+a:link{color:inherit;text-decoration:underline;}
 a:visited{color:inherit;}
 a:hover {color:black; text-decoration:underline;}
 
@@ -16,7 +20,7 @@ a:hover {color:black; text-decoration:underline;}
 	height:80px;
 }
 #title-text{
-	font-size:24px;
+	font-size:32px;
 	margin-left:20px;
 	margin-top:10px;
 	position:relative;
@@ -27,10 +31,10 @@ a:hover {color:black; text-decoration:underline;}
 	font-size:12px;
 	z-index:99;
 	cursor:pointer;
-	text-align:right;
-	top:0px;
+	text-align:left;
+	top:40px;
 	position:absolute;
-	right:10px;
+	left:20px;
 }
 
 #title-info{
@@ -46,6 +50,12 @@ a:hover {color:black; text-decoration:underline;}
 	margin-right:10px;
 	color:#fff;
 }
+#skipAnimation{
+	position:relative;
+	float:right;
+	margin-right:30px;
+	font-size:12px;
+}
 #navLabel{
 	width:40px;
 	height:20px;
@@ -57,7 +67,7 @@ a:hover {color:black; text-decoration:underline;}
 }
 #top-nav{
 	position:absolute;
-	top:540px;
+	top:580px;
 	font-size:10px;
 	left:25px;
 	z-index:99;
@@ -66,14 +76,14 @@ a:hover {color:black; text-decoration:underline;}
 #main-nav{
 	width:50px;
 	position:absolute;
-	top:50px;
-	margin-left:20px;
+	top:100px;
+	margin-left:15px;
 }
 #main-viz{
 	width:800px;
 	height:500px;
 	position:absolute;
-	top:50px;
+	top:100px;
 	left:30px;
 	cursor:pointer;
 }
@@ -83,37 +93,36 @@ a:hover {color:black; text-decoration:underline;}
 	width:800px;
 	height:500px;
 }
-
 #arcs svg {
 	position:absolute;
 	top:0px;
 	left:0px;
-	width:800px;
-	height:500px;
+
+}
+#calendar{
+	position:relative;
+
 }
 #details{
 	font-size:10px;
 	width:400px;
-	height:600px;
+	height:100%;
 	margin-left:20px;
 	position:absolute;
-	top:70px;
+	top:20px;
 	right:0px;
 	overflow:auto;
 }
 #ageLabel{
 	position:absolute;
-	top:550px;
-	left:55px;
+	top:590px;
+	left:58px;
 	font-size:10px;
 	cursor:pointer;
 }
-.axis text {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  stroke: #000;
-  shape-rendering: crispEdges;
+#footnote{
+	position:absolute;
+	bottom:20px;
+	left:20px;
+	font-size:12px;
 }

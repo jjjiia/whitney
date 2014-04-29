@@ -5,6 +5,8 @@ function test(){
 test()
 var mapShown = true
 
+var SHOULD_DRAW_MAPS = true
+
 var artists = []
 var csv = "DataSoFar_04262014_trimed2.csv"
 d3.csv(csv, function(data){
@@ -12,62 +14,81 @@ d3.csv(csv, function(data){
 	for(artist in data){
 		artists.push(data[artist])
 	}
-	//console.log(artists)
-	drawYears(2000,1000)
+	buildAgeDict(artists)
+	
+	drawYears(3000,2000)
 	drawAges(artists,100,1)
 	var calendarTallyData = dotCalendarTally(artists)
-	//console.log(calendarTallyData)	
-	//dotCalendarDraw(calendarTallyData)
-	var mapData = mapTally(filterData("All","All", "All"))
-	buildAgeDict(artists)
-//	drawMap(mapData)
-		
+	var mapData = mapTally(filterData("All","All", "All"))	
+	
+	drawInitialAnimatedMap()
+	
+	d3.selectAll("#skipAnimation")
+	.on("click", function(){
+		d3.selectAll("#arcs *").remove()
+		d3.selectAll("#main-nav *").remove()
+		drawYears(100,10)
+		d3.selectAll("#skipAnimation").remove()
+		drawDataMap(filterData("All","All", "All"), 500, "#efefef", "#444")
+	})
+	
 	d3.selectAll(".menu-calendar")
 	.on("click", function(){
-		d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
-		
-		d3.selectAll("#main-viz svg").remove()
-		dotCalendarDraw(calendarTallyData)
+		SHOULD_DRAW_MAPS = false
 		mapShown = false
-		//console.log(mapShown)
+		
+		d3.selectAll("#main-nav *").remove()
+		d3.selectAll("#arcs *").remove()
+		d3.selectAll("#skipAnimation").remove()
+		drawYears(100,10)		
+		dotCalendarDraw(calendarTallyData)
 	})
 	
 	d3.selectAll(".menu-map")
 	.on("click", function(){
-		d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
-		
-		d3.selectAll("#main-viz svg").remove()
-		drawMap(mapData)
+		SHOULD_DRAW_MAPS = true
 		mapShown = true
+		
+		d3.selectAll("#main-nav *").remove()
+		d3.selectAll("#calendar *").remove()
+		d3.selectAll("#skipAnimation").remove()
+		drawYears(100,10)		
+		drawDataMap(filterData("All","All", "All"), 500, "#efefef", "#444")
 	})
-	
-
-	setTimeout(function(){drawDataMap(filterData("1973","All", "All"), 0, "#efefef", "none")},0)
-	setTimeout(function(){drawDataMap(filterData("1975","All", "All"), 1000, "none", "#444")},0)	
-	setTimeout(function(){drawDataMap(filterData("1977","All", "All"), 1000, "none", "#444")},500)	
-	setTimeout(function(){drawDataMap(filterData("1979","All", "All"), 1000, "none", "#444")},1000)
-	setTimeout(function(){drawDataMap(filterData("1981","All", "All"), 1000, "none", "#444")},1500)
-	setTimeout(function(){drawDataMap(filterData("1983","All", "All"), 1000, "none", "#444")},2000)
-	setTimeout(function(){drawDataMap(filterData("1985","All", "All"), 1000, "none", "#444")},2500)
-	setTimeout(function(){drawDataMap(filterData("1987","All", "All"), 1000, "none", "#444")},3000)
-	setTimeout(function(){drawDataMap(filterData("1989","All", "All"), 1000, "none", "#444")},3500)
-	setTimeout(function(){drawDataMap(filterData("1991","All", "All"), 1000, "none", "#444")},4000)
-	setTimeout(function(){drawDataMap(filterData("1993","All", "All"), 1000, "none", "#444")},4500)
-	setTimeout(function(){drawDataMap(filterData("1995","All", "All"), 1000, "none", "#444")},5000)
-	setTimeout(function(){drawDataMap(filterData("1997","All", "All"), 1000, "none", "#444")},5500)
-	setTimeout(function(){drawDataMap(filterData("2000","All", "All"), 1000, "none", "#444")},6250)
-	setTimeout(function(){drawDataMap(filterData("2002","All", "All"), 1000, "none", "#444")},6750)
-	setTimeout(function(){drawDataMap(filterData("2004","All", "All"), 1000, "none", "#444")},7250)
-	setTimeout(function(){drawDataMap(filterData("2006","All", "All"), 1000, "none", "#444")},7750)
-	setTimeout(function(){drawDataMap(filterData("2008","All", "All"), 1000, "none", "#444")},8250)
-	setTimeout(function(){drawDataMap(filterData("2010","All", "All"), 1000, "none", "#444")},8750)
-	setTimeout(function(){drawDataMap(filterData("2012","All", "All"), 1000, "none", "#444")},9250)
-	setTimeout(function(){drawDataMap(filterData("2014","All", "All"), 1000, "none", "#444")},9750)
 })
 
+function drawInitialAnimatedMap(){
+	var interval = 2000
+	var speed = 4000
+	var fill = "none"
+	var stroke = "#444"
+	setTimeout(function(){drawDataMap(filterData("1973","All", "All"), 0, "#efefef", "none")},0)
+	setTimeout(function(){drawDataMap(filterData("1975","All", "All"), speed, fill, stroke)},0)	
+	setTimeout(function(){drawDataMap(filterData("1977","All", "All"), speed, fill, stroke)},1*interval)	
+	setTimeout(function(){drawDataMap(filterData("1979","All", "All"), speed, fill, stroke)},2*interval)
+	setTimeout(function(){drawDataMap(filterData("1981","All", "All"), speed, fill, stroke)},3*interval)
+	setTimeout(function(){drawDataMap(filterData("1983","All", "All"), speed, fill, stroke)},4*interval)
+	setTimeout(function(){drawDataMap(filterData("1985","All", "All"), speed, fill, stroke)},5*interval)
+	setTimeout(function(){drawDataMap(filterData("1987","All", "All"), speed, fill, stroke)},6*interval)
+	setTimeout(function(){drawDataMap(filterData("1989","All", "All"), speed, fill, stroke)},7*interval)
+	setTimeout(function(){drawDataMap(filterData("1991","All", "All"), speed, fill, stroke)},8*interval)
+	setTimeout(function(){drawDataMap(filterData("1993","All", "All"), speed, fill, stroke)},9*interval)
+	setTimeout(function(){drawDataMap(filterData("1995","All", "All"), speed, fill, stroke)},10*interval)
+	setTimeout(function(){drawDataMap(filterData("1997","All", "All"), speed, fill, stroke)},11*interval)
+	setTimeout(function(){drawDataMap(filterData("2000","All", "All"), speed, fill, stroke)},12*interval)
+	setTimeout(function(){drawDataMap(filterData("2002","All", "All"), speed, fill, stroke)},13*interval)
+	setTimeout(function(){drawDataMap(filterData("2004","All", "All"), speed, fill, stroke)},14*interval)
+	setTimeout(function(){drawDataMap(filterData("2006","All", "All"), speed, fill, stroke)},15*interval)
+	setTimeout(function(){drawDataMap(filterData("2008","All", "All"), speed, fill, stroke)},16*interval)
+	setTimeout(function(){drawDataMap(filterData("2010","All", "All"), speed, fill, stroke)},17*interval)
+	setTimeout(function(){drawDataMap(filterData("2012","All", "All"), speed, fill, stroke)},18*interval)
+	setTimeout(function(){drawDataMap(filterData("2014","All", "All"), speed, fill, stroke)},19*interval)
+}
 
 function drawDataMap(data, speed, fill, stroke){
-	//console.log("datamap")
+	if(!SHOULD_DRAW_MAPS){
+		return
+	}
     var map = new Datamap({
       scope: 'world',
       element: document.getElementById('arcs'),
@@ -208,8 +229,8 @@ function dotCalendarDraw(dataset){
 	.domain([1,19])
 	.range([3,10])
 	
-	var dotCalendar = d3.select("body #main-viz")
-	.append("svg")
+	var dotCalendar = d3.select("body #calendar")
+	.append("svg:svg")
 	.attr("width", w)
 	.attr("height", h)
 	.append("g")
@@ -266,6 +287,7 @@ function dotCalendarDraw(dataset){
 		}else{
 			d3.select("#details").html("<span style = \"font-size:16px\">In "+d[0]+ ", there were "+d[2]+" artists aged "+d[1]+":</span><br/>"+d[4]+"% of all "+d[0]+" artists, and "+d[5]+"% of all "+d[1]+" year old artists<br/><br/>"+newTable)
 		}
+		d3.selectAll("#skipAnimation").remove()
 	})
 }
 
@@ -278,8 +300,12 @@ function drawYears(duration, delay){
 	.domain([1973,2014])
 	.range([20,h-20])
 	
+	var timedYearScale = d3.scale.linear()
+	.domain([1973,2014])
+	.range([1,years.length])
+	
 	var yearlabels = d3.select("body #main-nav")
-	.append("svg")
+	.append("svg:svg")
 	.attr("width", w)
 	.attr("height", h)
 	.append("g")
@@ -294,7 +320,9 @@ function drawYears(duration, delay){
 	})
 	.attr("y", function(d,i){
 		//console.log(years.length)
+		//console.log(yearScale(d))
 		return yearScale(d)+10
+		//return i*23
 	})
 	.attr("x", function(d,i){
 		return 0
@@ -302,7 +330,7 @@ function drawYears(duration, delay){
 	.attr("opacity",0)
 	.transition()
 	.duration(duration)
-	.delay(function(d, i) { return i / 2 * delay; })
+	.delay(function(d, i) { console.log(timedYearScale(d)); return timedYearScale(d)/ 2 * delay; })
 	.attr("opacity",1)
 	
 	
@@ -321,11 +349,20 @@ function drawYears(duration, delay){
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
 
 		if(mapShown == true){
-			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
-			d3.selectAll("#main-viz svg").remove()
+			d3.selectAll("#arcs svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+//			d3.selectAll("#main-viz svg").remove()
+			d3.selectAll("#arcs svg").remove()
 			//drawMap(mapTally(filteredData))
-			drawDataMap(filteredData, 100, "#eee", "#222")
+			SHOULD_DRAW_MAPS = true
+			
+			drawDataMap(filteredData, 500, "#eee", "#222")
+			SHOULD_DRAW_MAPS = false
+		}else{
+			SHOULD_DRAW_MAPS = false
+			
+			//dotCalendarDraw(dotCalendarTally(artists))
 		}
+		d3.selectAll("#skipAnimation").remove()
 	})
 }
 function buildAgeDict(dataset){
@@ -440,12 +477,18 @@ function drawAges(dataset, duration, delay){
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
 
 		if(mapShown == true){
-			d3.selectAll("#main-viz svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
-			
-			d3.selectAll("#main-viz svg").remove()
+			d3.selectAll("#arcs svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
+//			d3.selectAll("#main-viz svg").remove()
+			d3.selectAll("#arcs svg").remove()
 			//drawMap(mapTally(filteredData))
-			drawDataMap(filteredData, 1000, "#eee", "#222")
+			SHOULD_DRAW_MAPS = true
+			drawDataMap(filteredData, 500, "#eee", "#222")
+			SHOULD_DRAW_MAPS = false
+		}else{
+			SHOULD_DRAW_MAPS = false
+			//dotCalendarDraw(dotCalendarTally(artists))
 		}
+		d3.selectAll("#skipAnimation").remove()
 	})
 }
 
@@ -552,12 +595,31 @@ function buildNameList(o){
 	return returnString
 }
 
+	//TODO://if click on age, title: # and percentage of that age, listform: display, year, name, born and live
+	function ageText(targetData){
+		//TODO:check if there is wiki before linking to
+		var artistname = wikiCase(o[i]["name"])
+		
+	}
+	//TODO://if click on year, title: # and percentage of that year, display name, age, born and live
+	function yearText(targetData){
+		
+	}
+	
+	//TODO://if click on dot, title: # and percentage of that year and # and percentage of that age display name, age born and live
+	function dotText(targetData){
+		
+	}
+
+
 function buildTable(o) {
-var table = $("<table/>")
 var returnString = ""
+var output = []
+
 for(i in o) {
 	var currentString = ""
-var artistname = titleCase(o[i]["name"])
+	//TODO:check if there is wiki before linking to
+var artistname = wikiCase(o[i]["name"])
 var birthplaceCity = titleCase(o[i]["birthplace city"])
 var birthplaceState = titleCase(o[i]["birthplace state"])
 var workplaceCity = titleCase(o[i]["work place city"])
@@ -565,11 +627,14 @@ var workplaceState = titleCase(o[i]["work place state"])
 var birthYear = titleCase(o[i]["birthyear"])
 var age = titleCase(o[i]["age at the time"])
 var biennialYear = titleCase(o[i]["year of exhibition"])
+
+output.push([artistname, birthplaceCity, birthplaceState, workplaceState])
+
 if(birthplaceCity == workplaceCity && birthplaceState == workplaceState){
 	currentString =artistname+" was born in and works in "+birthplaceCity+", "+birthplaceState+"<br/>"
 }
 else{
-	currentString =biennialYear+": "+ artistname+" born "+birthYear+", age:"+age+", "+birthplaceState + " lives and works in "+ workplaceCity+", "+workplaceState+"<br/>"
+	currentString ="<a href=\"http://en.wikipedia.org/wiki/List_of_recent_Whitney_Biennial_artists#"+biennialYear+"\"  target=\"_blank\">"+biennialYear+"</a> : "+ artistname+" born in "+birthplaceState + ", lives and works in "+workplaceState+"<br/>"
 }
 returnString = returnString +currentString
 }
@@ -577,14 +642,21 @@ return returnString
 }
 
 
+function wikiCase(input){
+	var output = ""
+	input = input.split(' ')
+	for(var c = 0; c < input.length; c++){
+		output += input[c].substring(0,1).toUpperCase() + input[c].substring(1,input[c].length) + '_';
+	}	
+	output = "<a href=\"https://en.wikipedia.org/wiki/"+output.substring(0, output.length-1)+"\"  target=\"_blank\">"+output.substring(0, output.length-1)+"</a>"
+	return output
+}
+
 function titleCase(input) {
 	var output = ""
-
 	input = input.toLowerCase().split(' ')
-
 	for(var c = 0; c < input.length; c++){
 		output += input[c].substring(0,1).toUpperCase() + input[c].substring(1,input[c].length) + ' ';
 	}
-
 	return output.trim()
 }
