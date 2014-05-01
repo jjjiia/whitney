@@ -29,7 +29,6 @@
 <body>
 
 <div id = "title">	
-	<div id = "title-info"><a href="#">A</a></div>
 	<div id = "skipAnimation"><a href="#">Skip Animation</a></div>
 	<div id = "title-text">WHITNEY BIENNIAL</div>
 	<div id = "title-nav">
@@ -48,9 +47,72 @@
 	<div id = "ageLabel">Ages:</div>
 	<!--<div id ="navLabel"><img src="navLabel.jpg" height="20" width="40"></div> -->
 </div>
+<div id = "detailsTitle"></div>
 <div id = "details"></div>
-<div id = "footnote">*wikipedia links where available</div>
-
-<script src="main.js"></script>	
+<div id = "footnote">* wikipedia links where available</div>
+<a id="showMore" href="#"> About</a>
+<div id="essayBox">
+	<div id='essayBox-close' class="glyphicon glyphicon-remove"></div>
+	
+					    <!-- <h1> Essay Title </h1>  -->
+	<div id='essayContent'>
+	<table style="width:1000px;">
+	<tr>
+	  <td>
+		<span style = "font-size:15px;">About </span>
+		</br>
+		</br>
+		The Whitney Museum of American Art's 77th Biennial Exhibition opened on March 7th, 2014. Held every two years by the Whitney, the Biennial has been a significant event for both professionals in the arts and for the public since their inaugural exhibition of 1932. 
+		</br>
+		</br>
+		The biennials have been of particular value because of their level of accessibility to people who, like me, are not fluent in the language of contemporary art. The whitney biennial has provided gatherings of works that have proven (often in retrospect) to be thoughtful representations of their zeitgeists.
+		</br>
+		</br>
+		The motivation for this project lies in the belief that information about these exhibitions should be made readily accessible. As the shows
+		provide accessibility through a gathering of diverse but representitive work, the visualization would do the same for its history - 
+		summarizing overviews provided by the map and calendar serve as portals for users to navigate to more indepth information.
+		</br>
+		</br> 
+  		The overview also provides immediate identification of trends - the traffic between New York, Los Angeles, and San Francisco
+		show a clear concentration of artists at work; the calendar view shows a peak of artists aged between 25 and 35;
+		and outliers - the youngest and oldest artists standing apart from the pack at age 20, and 89 are both women.
+		 </br>
+		</br>
+  		A quick internet search revealed that records of the artists represented in the Whitney Biennial before 2000 are not easily accessible. 
+  		A list of participating artists on Wikipedia also only date back to 2000. 
+  		</br>
+  		</br>
+  		This lack of digitized, verified, and accessible data sits in sharp contrast to the vast trove of editorial writing 
+ 		about the exhibitions available on the internet. 
+  		It is likely that this lack is more than a simple oversight. It could point to how we want exhibitions to be remembered, as impressions cast in their curatorial contexts and guided by expert voices rather than lists and charts. Nevertheless, here is an
+  		attempt to do the opposite, hoping that this visualization aids engagement not already made by what is out there.
+  		</br> 
+		 </td>
+		 <td>
+		 <span style = "font-size:15px;">Data</span>
+		 </br>
+ 		</br>
+ 		This project contributed to wikipedia by completing the list of participating artists between 1973 and 2000. (with the exception of 1987)
+ 		</br>
+ 		</br>
+ 		Data can be reused through this <a href = "https://docs.google.com/spreadsheets/d/1wHuMRKNzKXg97rwIz4fWagCf-UJKcHBDrSZJm2lhNmo/edit?usp=sharing">
+ 		google spreadsheet</a>.
+		</br>
+		</br>
+	  	<span style = "font-size:15px;">How it's Made</span>
+		</br>
+		</br>
+		This visualization is made with D3, JQuery and D3 Datamaps and a lot of help online and off.
+		Data is cleaned, sorted and verified with python. 
+		</br>
+		</br>
+	 CS171 Video
+	  <iframe src="//player.vimeo.com/video/93305666" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/93305666">CS 171</a> from <a href="http://vimeo.com/user430565">jia zhang</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+	  </td>
+	</tr>
+	</table>
+	</div>
+<script src="main.js"></script>
+</div>
 </body>
 </html>

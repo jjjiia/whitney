@@ -36,24 +36,10 @@ a:hover {color:black; text-decoration:underline;}
 	position:absolute;
 	left:20px;
 }
-
-#title-info{
-	width:15px;
-	height:15px;
-	border-radius:50%;
-	font-size:10px;
-	line-height:160%;
-	background-color:#000;
-	position:relative;
-	float:right;
-	text-align:right;
-	margin-right:10px;
-	color:#fff;
-}
 #skipAnimation{
 	position:relative;
 	float:right;
-	margin-right:30px;
+	margin-right:20px;
 	font-size:12px;
 }
 #navLabel{
@@ -101,17 +87,23 @@ a:hover {color:black; text-decoration:underline;}
 }
 #calendar{
 	position:relative;
-
 }
 #details{
 	font-size:10px;
-	width:400px;
-	height:100%;
-	margin-left:20px;
+	height:520px;
 	position:absolute;
-	top:20px;
-	right:0px;
+	top:70px;
+	left:980px;
 	overflow:auto;
+	margin-right:10px;
+}
+#detailsTitle{
+	font-size:18px;
+	top:20px;
+	height:30px;
+	left:980px;
+	width:400px;
+	position:absolute;
 }
 #ageLabel{
 	position:absolute;
@@ -122,7 +114,22 @@ a:hover {color:black; text-decoration:underline;}
 }
 #footnote{
 	position:absolute;
-	bottom:20px;
-	left:20px;
+	bottom:10px;
+	right:20px;
 	font-size:12px;
+}
+#showMore{
+	position:absolute;
+	bottom:10px;
+	left:20px;
+	font-size:12px;	
+}
+#essayBox{position:absolute; top:50px;display:none; height: 600px; width:100%; opacity: 0.0;color : #444;padding-left: 10px; padding-right: 10px; font-size: 11px;letter-spacing: 1px;background-color:rgba(255, 255, 255, 0.9);z-index:200;}
+#essayBox-close { cursor: pointer; height: 10px;width: 5%; padding: 5px; color:#333; z-index:100;}
+#essayContent p {margin-bottom: 10px;margin-left:30px;margin-right:150px;z-index:90;}
+#essayContent a {color: black;text-decoration: underline;z-index:90;}
+th,td
+{
+padding:10px;
+align:top;
 }

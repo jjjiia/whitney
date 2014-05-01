@@ -1,14 +1,15 @@
 function test(){
 	//console.log("connected to js")
 }
-
 test()
+
+//GLOBALS
 var mapShown = true
-
 var SHOULD_DRAW_MAPS = true
-
 var artists = []
-var csv = "DataSoFar_04262014_trimed2.csv"
+var csv = "DataSoFar_04262014_trimed_wiki.csv"
+
+//DATA FUNCTION
 d3.csv(csv, function(data){
 	
 	for(artist in data){
@@ -16,7 +17,7 @@ d3.csv(csv, function(data){
 	}
 	buildAgeDict(artists)
 	
-	drawYears(3000,2000)
+	drawYears(2000,1500)
 	drawAges(artists,100,1)
 	var calendarTallyData = dotCalendarTally(artists)
 	var mapData = mapTally(filterData("All","All", "All"))	
@@ -35,13 +36,17 @@ d3.csv(csv, function(data){
 	d3.selectAll(".menu-calendar")
 	.on("click", function(){
 		SHOULD_DRAW_MAPS = false
-		mapShown = false
 		
 		d3.selectAll("#main-nav *").remove()
 		d3.selectAll("#arcs *").remove()
 		d3.selectAll("#skipAnimation").remove()
 		drawYears(100,10)		
-		dotCalendarDraw(calendarTallyData)
+		if (mapShown !=false){
+			dotCalendarDraw(calendarTallyData)
+		}
+		mapShown = false
+		d3.select("#detailsTitle").html("")
+		d3.select("#details").html("")
 	})
 	
 	d3.selectAll(".menu-map")
@@ -54,12 +59,15 @@ d3.csv(csv, function(data){
 		d3.selectAll("#skipAnimation").remove()
 		drawYears(100,10)		
 		drawDataMap(filterData("All","All", "All"), 500, "#efefef", "#444")
+		d3.select("#detailsTitle").html("")
+		d3.select("#details").html("")
 	})
 })
 
+//USES D3 datamaps library
 function drawInitialAnimatedMap(){
-	var interval = 2000
-	var speed = 4000
+	var interval = 800
+	var speed = 1000
 	var fill = "none"
 	var stroke = "#444"
 	setTimeout(function(){drawDataMap(filterData("1973","All", "All"), 0, "#efefef", "none")},0)
@@ -174,10 +182,8 @@ function dotCalendarTally(artists){
 		"2010":{},"2012":{},"2014":{}
 	}
 	for(artist in artists){
-		//separate by years
 		var currentYear = artists[artist]["year of exhibition"]
 		var currentAge = artists[artist]["age at the time"]
-		//console.log(currentYear, currentAge)
 		if(byYear[currentYear] != undefined){
 			if (byYear[currentYear][currentAge]==undefined){
 				byYear[currentYear][currentAge]=[]
@@ -186,9 +192,7 @@ function dotCalendarTally(artists){
 				byYear[currentYear][currentAge].push(artists[artist])
 			}
 		}
-		//console.log(currentYear, currentAge, byYear[currentYear][currentAge].length,byYear[currentYear][currentAge])
 	}
-	//console.log(byYear)
 	var lengthOnly = []
 	for(year in byYear){
 		var yearSum = filterData(year,"All", "All").length		
@@ -201,10 +205,7 @@ function dotCalendarTally(artists){
 				lengthOnly.push(byYear[year][age].length)
 			}
 		}
-		//console.log(year,sum)
 	}
-	
-	//console.log(d3.max(lengthOnly))
 	return(calendarTallyData)
 }
 
@@ -252,7 +253,6 @@ function dotCalendarDraw(dataset){
 	.duration(1000)
 	.delay(function(d, i) { return i / 2 *3; })
 	.attr("r", function(d,i){
-		//console.log(d[2])
 		return rScale(d[2])
 	})
 	.attr("opacity", function(d){
@@ -261,12 +261,7 @@ function dotCalendarDraw(dataset){
 	.attr("fill", "black");
 	
 	dotCalendar.selectAll("circle").on("mouseover", function(d){
-//		if(parseInt(d[2])== 1){
-//			d3.select("#details").html("In "+d[0]+ ", there was "+d[2]+" Artists Aged "+d[1]+". Click on Circle for Details")
-//			
-//		}else{
-//			d3.select("#details").html("In "+d[0]+ ", there were "+d[2]+" Artists Aged "+d[1]+". Click on Circle for Details")
-//		}
+
 	d3.select(this).style("fill", "#fff").style("stroke", "black").style("stroke-width", "2")
 	})
 	.on("mouseout", function(){
@@ -280,12 +275,14 @@ function dotCalendarDraw(dataset){
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
 		d3.select(this).attr("class", "d3-clicked").style("fill", "#fff").style("stroke", "black").style("stroke-width", "2")
 	//var newString = JSON.parse(d[3])
-		var newTable = buildTable(d[3])
+		var newTable = dotText(d[3])
 		//console.log(newTable)
 		if(parseInt(d[2])==1){
-			d3.select("#details").html("<span style = \"font-size:16px\">In "+d[0]+ ", there was "+d[2]+" artist aged "+d[1]+":</span><br/>"+d[4]+"% of all "+d[0]+" artists, and "+d[5]+"% of all "+d[1]+" year old artists<br/><br/>"+newTable)
+			d3.select("#detailsTitle").html(d[0]+ ", there was "+d[2]+" artist aged "+d[1])
+			d3.select("#details").html(d[4]+"% of all "+d[0]+" artists, and "+d[5]+"% of all "+d[1]+" year old artists<br/><br/>"+newTable)
 		}else{
-			d3.select("#details").html("<span style = \"font-size:16px\">In "+d[0]+ ", there were "+d[2]+" artists aged "+d[1]+":</span><br/>"+d[4]+"% of all "+d[0]+" artists, and "+d[5]+"% of all "+d[1]+" year old artists<br/><br/>"+newTable)
+			d3.select("#detailsTitle").html(d[0]+ ", there were "+d[2]+" artists aged "+d[1])
+			d3.select("#details").html(d[4]+"% of all "+d[0]+" artists, and "+d[5]+"% of all "+d[1]+" year old artists<br/><br/>"+newTable)
 		}
 		d3.selectAll("#skipAnimation").remove()
 	})
@@ -330,7 +327,7 @@ function drawYears(duration, delay){
 	.attr("opacity",0)
 	.transition()
 	.duration(duration)
-	.delay(function(d, i) { console.log(timedYearScale(d)); return timedYearScale(d)/ 2 * delay; })
+	.delay(function(d, i) {return timedYearScale(d)/ 2 * delay; })
 	.attr("opacity",1)
 	
 	
@@ -344,23 +341,20 @@ function drawYears(duration, delay){
 		//console.log(filterData(d,"All", "All").length)
 		//console.log(filterData(d,"All", "All"))
 		var filteredData= filterData(d,"All", "All")
-		var newTable = buildTable(filteredData)
-		d3.select("#details").html("<span style = \"font-size:16px\">There were "+filterData(d,"All", "All").length+" artists in the "+d+" Biennial</span><br/>"+newTable)
+		var newTable = yearText(filteredData)
+		d3.select("#detailsTitle").html("<span style = \"font-size:16px\">There were "+filterData(d,"All", "All").length+" artists in the "+d+" Biennial</span><br/>")
+		d3.select("#details").html(newTable)
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
-
+		d3.selectAll("#main-nav *").remove()
+		drawYears(100,10)
 		if(mapShown == true){
 			d3.selectAll("#arcs svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
-//			d3.selectAll("#main-viz svg").remove()
 			d3.selectAll("#arcs svg").remove()
-			//drawMap(mapTally(filteredData))
 			SHOULD_DRAW_MAPS = true
-			
 			drawDataMap(filteredData, 500, "#eee", "#222")
 			SHOULD_DRAW_MAPS = false
 		}else{
 			SHOULD_DRAW_MAPS = false
-			
-			//dotCalendarDraw(dotCalendarTally(artists))
 		}
 		d3.selectAll("#skipAnimation").remove()
 	})
@@ -378,12 +372,7 @@ function buildAgeDict(dataset){
 		}
 	}
 	}
-	//var ageDict = []
-//	for (age in ages){
-//		ageDict.push([ages[age], ages[age].length])
-//	}
-	//console.log(ageDict)
-//	return ageDict
+
 return ages
 }
 
@@ -398,19 +387,18 @@ function drawAges(dataset, duration, delay){
 	for(age in dataset){
 		if(dataset[age]["age at the time"] != "none"){
 			var currentAge = (dataset[age]["age at the time"])
-			if(ages[age]==undefined){
-				ages[age]=[]
-				ages[age].push(currentAge)
-			}else{
-				ages[age].push(currentAge)
+			if(currentAge != 101){
+				if(ages[age]==undefined){
+					ages[age]=[]
+					ages[age].push(currentAge)
+				}else{
+					ages[age].push(currentAge)
+				}
 			}
 		}
 	}
-//	var ageDict = []
-//	for(age in ages){
-//		ageDict.push(ages[age][0], ages[age].length)
-//	}
-//	console.log(ageDict)
+//	console.log(ages)
+
 	var specialAges = [20,30, 40, 50, 60, 89]
 	//var ages = ["20","30","40","50","60", "89"]
 	var h = 20
@@ -466,16 +454,23 @@ function drawAges(dataset, duration, delay){
 	})
 	.on("click", function(d,i){
 		var filteredData = filterData("All",d, "All")
-		var newTable = buildTable(filteredData)
+		var newTable = ageText(filteredData)
 		var totalArtists = artists.length
 		var percentage = d3.round(filteredData.length/totalArtists*100)
-		if(filterData("All",d, "All").length==1){
-		d3.select("#details").html("<span style = \"font-size:16px\">There was only "+filterData("All",d, "All").length+" artist aged "+d+"</span><br/>"+newTable)
-		}else{
-		d3.select("#details").html("<span style = \"font-size:16px\">"+filterData("All",d, "All").length+" or "+percentage+"% artists were aged "+d+"</span><br/>"+newTable)
+		if(percentage<1){
+			percentage = "less than 1"
 		}
+		if(filterData("All",d, "All").length==1){
+		d3.select("#detailsTitle").html("<span style = \"font-size:16px\">There was only "+filterData("All",d, "All").length+" artist aged "+d+"</span><br/>")
+		d3.select("#details").html(newTable)
+		}else{
+		d3.select("#detailsTitle").html("<span style = \"font-size:16px\">"+filterData("All",d, "All").length+" or "+percentage+"% artists were aged "+d+"</span><br/>")
+		d3.select("#details").html(newTable)
+		}
+		
 		d3.selectAll(".dot-calendar circle").attr("class", "").style("fill", "black").style("stroke", "none")
-
+		d3.selectAll("#main-nav *").remove()
+		drawYears(100,10)
 		if(mapShown == true){
 			d3.selectAll("#arcs svg").attr("opacity", 1).transition().duration(1000).attr("opacity", 0)
 //			d3.selectAll("#main-viz svg").remove()
@@ -514,8 +509,9 @@ function mapTally(targetCountryStatusSector){
 	return mapStats
 }
 
+//old choropleth map, not in use
 function drawMap(dataset){
-	console.log("map")
+	//console.log("map")
 	var width = 1100;
 	var height = 600;
 	var mpa = d3.map();
@@ -566,7 +562,6 @@ var color = d3.scale.sqrt().range(["#fff", maxColor])
 				return "#fff";
 			}
 		})
-//		.attr("opacity", 0)
 		.transition()
 		.duration(2000)
 		.attr("opacity",1)
@@ -574,9 +569,9 @@ var color = d3.scale.sqrt().range(["#fff", maxColor])
 	map.selectAll("path")
 	.on("click", function(d,i){
 		var Country = json.features[i].properties.name
-		console.log(Country)
+		//console.log(Country)
 		var filteredData = filterData("All", "All", Country)
-		console.log(filteredData)
+		//console.log(filteredData)
 		var newTable = buildTable(filteredData)
 		d3.select("#details").html(newTable)
 	})
@@ -595,20 +590,59 @@ function buildNameList(o){
 	return returnString
 }
 
-	//TODO://if click on age, title: # and percentage of that age, listform: display, year, name, born and live
-	function ageText(targetData){
-		//TODO:check if there is wiki before linking to
-		var artistname = wikiCase(o[i]["name"])
-		
+	function ageText(data){
+		var ageText = ""
+		for(i in data) {
+		var wikiPage = data[i]["wikipedia"]
+		if(wikiPage == "yes"){
+		var artistname = wikiCase(data[i]["name"])
+		}else{
+			var artistname = titleCase(data[i]["name"])
+		}
+		var birthplaceCity = titleCase(data[i]["birthplace city"])
+		var birthplaceState = titleCase(data[i]["birthplace state"])
+		var workplaceCity = titleCase(data[i]["work place city"])
+		var workplaceState = titleCase(data[i]["work place state"])
+		var birthYear = titleCase(data[i]["birthyear"])
+		var age = titleCase(data[i]["age at the time"])
+		var biennialYear = titleCase(data[i]["year of exhibition"])
+		ageText = ageText +biennialYear+": "+artistname+" born in "+birthplaceState+" lives and works in "+ workplaceState+"</br>"
+		}
+		return ageText
 	}
-	//TODO://if click on year, title: # and percentage of that year, display name, age, born and live
-	function yearText(targetData){
-		
+
+	function yearText(data){
+		var ageArray = []
+		for(i in data) {
+			var wikiPage = data[i]["wikipedia"]
+			if(wikiPage == "yes"){
+			var artistname = wikiCase(data[i]["name"])
+			}else{
+				var artistname = titleCase(data[i]["name"])
+			}
+		ageArray.push([artistname])
+		}
+		return(ageArray)
 	}
 	
-	//TODO://if click on dot, title: # and percentage of that year and # and percentage of that age display name, age born and live
-	function dotText(targetData){
-		
+	function dotText(data){
+		var dotText = ""
+		for(i in data) {
+			var wikiPage = data[i]["wikipedia"]
+			if(wikiPage == "yes"){
+			var artistname = wikiCase(data[i]["name"])
+			}else{
+				var artistname = titleCase(data[i]["name"])
+			}
+		var birthplaceCity = titleCase(data[i]["birthplace city"])
+		var birthplaceState = titleCase(data[i]["birthplace state"])
+		var workplaceCity = titleCase(data[i]["work place city"])
+		var workplaceState = titleCase(data[i]["work place state"])
+		var birthYear = titleCase(data[i]["birthyear"])
+		var age = titleCase(data[i]["age at the time"])
+		dotText = dotText + artistname+" born in "+birthplaceState+" lives and works in "+ workplaceState+"</br>"
+		}
+		return dotText
 	}
 
 
@@ -618,7 +652,6 @@ var output = []
 
 for(i in o) {
 	var currentString = ""
-	//TODO:check if there is wiki before linking to
 var artistname = wikiCase(o[i]["name"])
 var birthplaceCity = titleCase(o[i]["birthplace city"])
 var birthplaceState = titleCase(o[i]["birthplace state"])
@@ -643,12 +676,13 @@ return returnString
 
 
 function wikiCase(input){
+	var artistName = titleCase(input)
 	var output = ""
 	input = input.split(' ')
 	for(var c = 0; c < input.length; c++){
 		output += input[c].substring(0,1).toUpperCase() + input[c].substring(1,input[c].length) + '_';
 	}	
-	output = "<a href=\"https://en.wikipedia.org/wiki/"+output.substring(0, output.length-1)+"\"  target=\"_blank\">"+output.substring(0, output.length-1)+"</a>"
+	output = "<a href=\"https://en.wikipedia.org/wiki/"+output.substring(0, output.length-1)+"\"  target=\"_blank\"> "+artistName+" </a>"
 	return output
 }
 
@@ -660,3 +694,34 @@ function titleCase(input) {
 	}
 	return output.trim()
 }
+
+//ESSAY BOX DO NOT CHANGE = from WESAM's template
+var essayBoxShown = false;
+ $('#showMore').click(function(e){
+     e.preventDefault();
+     essayBoxShown = !essayBoxShown;
+     if (essayBoxShown) {
+         $('#essayBox').css('display', 'block');
+         $('#essayBox').animate({'opacity':1.0}, 500);
+         $(this).text(' Back to Visualization ');
+ 	//	d3.select("#detailsTitle").html("")
+ 		//d3.select("#details").html("")
+		//d3.select("#skipAnimation").remove()
+     } else {
+         closeEssayBox();
+         $(this).text(' About ');
+     }
+   })
+   $('#essayBox-close').click(function(){
+//	   console.log("close")
+     closeEssayBox();
+     $('#showMore').text(' About ');
+   });
+
+
+  function closeEssayBox(){
+   $('#essayBox').animate({'opacity':0.0}, 500, function () {
+     $('#essayBox').css('display', 'none');
+   })
+   essayBoxShown = false;
+ }
